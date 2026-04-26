@@ -16,7 +16,7 @@
 
 ### 2. 为什么“容量问题”这个旧定义已经不够
 
-早期 KV offload 的出发点很简单：上下文更长、批次更大、HBM 不够，于是把问题表述成“如何把 KV 搬到 CPU memory 或 storage”。但 `S006 (NOSA)` 和 `S007 (ScoutAttention)` 这类材料共同说明，真实瓶颈并不只是容量，而是**locality engineering 与 transfer domination**。NOSA 把 sparse attention 从一开始就设计成 offload-friendly，目标不是只减少 attention FLOPs，而是减少必须跨层级搬运的 selected KV；ScoutAttention 更进一步，让 CPU 在 layer-ahead 阶段参与预计算，证明 CPU 可以从被动搬运者前移成恢复路径的一部分。[2][3]
+早期 KV offload 的出发点很简单：上下文更长、批次更大、HBM 不够，于是把问题表述成“如何把 KV 搬到 CPU memory 或 storage”。但 `S006 (NOSA)` 和 `S007 (ScoutAttention)` 这类材料共同说明，真实瓶颈并不只是容量，而是**locality engineering 与 transfer domination**。在本章里，它们最重要的作用不是展开 sparse access 的全部机制，而是证明同一段 KV 的系统价值已经转向“是否值得保留、是否能更便宜地恢复”。NOSA 把 sparse attention 设计成 offload-friendly，说明 selected KV transfer 才是关键成本；ScoutAttention 让 CPU 在 layer-ahead 阶段参与预计算，则说明恢复路径本身已经值得被提前规划。[2][3]
 
 换句话说，旧定义只回答“KV 放哪儿”；新定义必须同时回答：
 
@@ -65,7 +65,7 @@ ScoutAttention 的核心启发不是单纯把 KV 搬回，而是让 CPU 通过 l
 
 ![KV memory hierarchy](../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/agentic-kv-memory-hierarchy.svg)
 
-图 2 强调 lifecycle 的工程本质不是单次 offload，而是状态在 HBM、CPU memory、远端层级之间持续流动。CPU 的职责因此更像层级状态管理，而不是一次性 DMA 触发器。[2][3]
+图 2 在本节支持的不是“有层级”这个常识，而是更具体的判断：一旦 KV 要在 HBM、CPU memory 和远端层级之间被长期保留、迁移与恢复，它就已经更像生命周期对象，而不是一次性 spill 桶。[2][3]
 
 ### 5. 为什么这会把 CPU 推到新位置
 

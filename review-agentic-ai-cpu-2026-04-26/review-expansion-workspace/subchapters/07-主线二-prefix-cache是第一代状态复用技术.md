@@ -29,6 +29,7 @@ APC 真正完成了三件此前并不显式的事：
 ![Agentic KV reuse and routing](../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/nvidia-dynamo-agentic-kv-readwrite-2026.webp)
 
 图 1 不是 APC 的实现图，而是用来解释为什么 prefix reuse 会迅速变成控制面问题：agentic workload 下共享前缀和高读写比叠加，使“避免重复 prefill”直接决定 TTFT 与调度压力。[2][3]
+图 1 不是 APC 的实现图，而是用来解释 APC 为什么会迅速升级成控制面问题：agentic workload 下共享前缀和高读写比叠加，使“避免重复 prefill”直接决定 TTFT 与调度压力。[2][3]
 
 ### 3. APC 解决了什么
 
@@ -55,11 +56,11 @@ APC 真正完成了三件此前并不显式的事：
 
 ### 5. 为什么说它是“第一代”而不是“完整方案”
 
-把 APC 定位成第一代，有两个好处。第一，它承认这项技术已经完成了状态复用的基础抽象：状态可被识别、保留、再利用。第二，它也清楚承认这一步仍然过于朴素，后面还必须引入 routing、retention、events 和更强的 identity 机制。换句话说，APC 为后续控制面铺了路，但它本身并不是终点。
+把 APC 定位成第一代，有两个好处。第一，它承认这项技术已经完成了状态复用的基础抽象：状态可被识别、保留、再利用。第二，它也清楚承认这一步仍然过于朴素，后面还必须引入 routing、retention、events 和更强的 identity 机制。换句话说，APC 为后续控制面铺了路，但它本身并不是终点。它先证明了“已有状态值得被看见和重用”，后续章节要讨论的则是：这些状态该如何跨 worker 被路由、如何被长期保留、以及在分支和多模态场景下该如何被正确标识。
 
 ### 6. 小结
 
-本节想建立的是一个历史定位：APC 之所以重要，不是因为它本身足够复杂，而是因为它第一次把 `state reuse` 明确建成了 runtime 能力。vLLM 的 prefix cache manager 与 TensorRT-LLM 的 `5x` TTFT 改善共同说明，第一代 prefix reuse 已经足以改变服务系统的成本中心；同时，它的 block 粒度、exact prefix 假设和分布式可见性边界，也决定了后续必须出现更强的路由、保留和事件化机制。[1][2]
+本节想建立的是一个历史定位：APC 之所以重要，不是因为它本身足够复杂，而是因为它第一次把 `state reuse` 明确建成了 runtime 能力。vLLM 的 prefix cache manager 与 TensorRT-LLM 的 `5x` TTFT 改善共同说明，第一代 prefix reuse 已经足以改变服务系统的成本中心；同时，它的 block 粒度、exact prefix 假设和分布式可见性边界，也决定了后续必须出现更强的路由、保留和事件化机制。下一节讨论的 `routing / retention / events / identity`，正是 APC 这些边界被真实工作负载逼出来的第二阶段演化。[1][2]
 
 ### 参考文献
 
@@ -68,26 +69,3 @@ APC 真正完成了三件此前并不显式的事：
 [2] 5x Faster Time to First Token with NVIDIA TensorRT-LLM KV Cache Early Reuse. 2024-11-08.
 
 [3] Full-Stack Optimizations for Agentic Inference with NVIDIA Dynamo. 2026-04-17.
-- 如果 worker 之间负载已经失衡，是否还该坚持 cache affinity？
-- 在图像、工具描述、会话分支不同但文本前缀相近时，缓存身份应如何定义？
-
-这些问题都不是 APC 第一阶段自身能够完整回答的，但正是这些问题，决定了后续技术演化的方向。换句话说，APC 的真正贡献并不是把状态复用问题彻底解决，而是把它从“看似可以忽略的加速小技巧”升级为“必须由 CPU 和控制平面持续管理的系统对象”。
-
-从 CPU 视角看，这一步尤其关键。只要 APC 仍停留在单机命中层面，CPU 的角色还相对有限，更多像一个支持性缓存维护者；但一旦 APC 的命中与否开始影响请求路由、负载均衡、保留策略和恢复路径，CPU 就不得不承担更中心的控制职责。它至少需要管理三类元数据：
-
-- 哪些 prefix 当前存在、在哪里存在；
-- 哪些 prefix 的未来复用概率更高，值得继续保留；
-- 哪些请求应优先被送往 cache-affine 的位置，而哪些请求更应该为了整体吞吐牺牲局部命中。
-
-也正是在这个意义上，APC 为后续所有“状态控制平面化”技术打开了入口。后面的 prefix-aware routing、priority retention、event-driven reuse、本地与远端 cache 视图同步，都可以被看作是在 APC 奠定的基础上继续往前走。没有第一代 APC，后续系统甚至缺少一个最起码的默认前提：**已有状态值得被显式看见、标识、保留和调度。**
-
-放回 agentic workload，这一点就更容易理解。Agentic inference 的难点，不是单个请求特别长，而是状态形状变化频繁、共享前缀大量存在、回合经常短促切换、不同分支之间相似但不完全一致。APC 刚好命中了这条演化链的起点。它先用最保守、最直接的方法证明：重复 prefill 不是不可避免的；系统是可以主动识别和重用已有状态的。之后的问题才变成：重用如何更稳定、更细粒度、更分布式、更 aware 于 workload 结构。
-
-因此，对本综述而言，APC 的位置应被清晰界定为：
-
-1. 它不是 prefix 技巧的终点，而是状态复用控制平面的起点。
-2. 它证明了“KV 不是一次性副产物，而是可再利用状态对象”。
-3. 它的边界直接催生了下一阶段技术，即 cache affinity、retention policy、event-driven reuse 和 state identity design。
-
-本子章节的结论因此可以压缩成一句话：  
-`Automatic Prefix Caching` 的历史意义，在于它第一次把“前缀复用”做成了推理系统的显式能力；但也正因为它只解决了“是否命中本地共享前缀”这一最初级问题，后续服务系统才必须继续向更完整的状态复用控制平面演化。

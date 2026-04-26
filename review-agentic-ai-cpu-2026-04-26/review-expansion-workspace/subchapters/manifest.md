@@ -21,7 +21,7 @@
 | S006 | NOSA: Native and Offloadable Sparse Attention (arXiv 2510.13602) | 学术论文 | 2025-10 |
 | S007 | ScoutAttention: Efficient KV Cache Offloading via Layer-Ahead CPU Pre-computation (arXiv 2603.27138) | 学术论文 | 2026-03 |
 | S008 | FluxMoE: Decoupling Expert Residency for High-Performance MoE Serving (arXiv 2604.02715) | 学术论文 | 2026-04 |
-| S009 | *(待确认，子章节 16 判断表中引用，sources-index 中无明确条目)* | — | — |
+| S009 | Enhancing Distributed Inference Performance with the NVIDIA Inference Transfer Library | 官方博客 | 2026-03 |
 | S010 | vLLM Automatic Prefix Caching | 官方文档 | current |
 | S011 | BentoML: Prefix-Aware Routing | 技术文档 | current |
 | S013 | Kimi Linear: An Expressive, Efficient Attention Architecture (arXiv 2510.26692) | 学术论文 | 2025-10 |
