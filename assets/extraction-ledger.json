@@ -1,0 +1,489 @@
+{
+  "total": 47,
+  "completed": 47,
+  "failed": 0,
+  "items": [
+    {
+      "source_id": "S001",
+      "pdf_name": "s001-prefill-as-a-service-2026-04.pdf",
+      "arxiv_id": "2604.15039",
+      "method": "arxiv_source",
+      "output_dir": "assets/extracted-figures-all/s001",
+      "status": "completed",
+      "figures_count": 6,
+      "errors": []
+    },
+    {
+      "source_id": "S005",
+      "pdf_name": "s005-cpu-induced-slowdowns-2026-03.pdf",
+      "arxiv_id": "2603.22774",
+      "method": "arxiv_source",
+      "output_dir": "assets/extracted-figures-all/s005",
+      "status": "completed",
+      "figures_count": 13,
+      "errors": []
+    },
+    {
+      "source_id": "S006",
+      "pdf_name": "s006-nosa-sparse-attention-2025-10.pdf",
+      "arxiv_id": "2510.13602",
+      "method": "arxiv_source",
+      "output_dir": "assets/extracted-figures-all/s006",
+      "status": "completed",
+      "figures_count": 14,
+      "errors": []
+    },
+    {
+      "source_id": "S007",
+      "pdf_name": "s007-scoutattention-kv-offloading-2026-03.pdf",
+      "arxiv_id": "2603.27138",
+      "method": "arxiv_source",
+      "output_dir": "assets/extracted-figures-all/s007",
+      "status": "completed",
+      "figures_count": 16,
+      "errors": []
+    },
+    {
+      "source_id": "S008",
+      "pdf_name": "s008-fluxmoe-moe-serving-2026-04.pdf",
+      "arxiv_id": "2604.02715",
+      "method": "arxiv_source",
+      "output_dir": "assets/extracted-figures-all/s008",
+      "status": "completed",
+      "figures_count": 21,
+      "errors": []
+    },
+    {
+      "source_id": "S013",
+      "pdf_name": "s013-kimi-linear-attention-2025-10.pdf",
+      "arxiv_id": "2510.26692",
+      "method": "arxiv_source",
+      "output_dir": "assets/extracted-figures-all/s013",
+      "status": "completed",
+      "figures_count": 2,
+      "errors": []
+    },
+    {
+      "source_id": "S018",
+      "pdf_name": "s018-kimi-linear-abstract-mirror.pdf",
+      "arxiv_id": "2510.26692",
+      "method": "arxiv_source",
+      "output_dir": "assets/extracted-figures-all/s018",
+      "status": "completed",
+      "figures_count": 2,
+      "errors": []
+    },
+    {
+      "source_id": "S036",
+      "pdf_name": "s036-arxiv-org-FineMoE- Modeling Fine-Grained MoE Residuals for E.pdf",
+      "arxiv_id": "2502.05370",
+      "method": "arxiv_source",
+      "output_dir": "assets/extracted-figures-all/s036",
+      "status": "completed",
+      "figures_count": 22,
+      "errors": []
+    },
+    {
+      "source_id": "S037",
+      "pdf_name": "s037-arxiv-org-SpecMoEOff- Accelerating Mixture-of-Experts Infere.pdf",
+      "arxiv_id": "2508.21706",
+      "method": "arxiv_source",
+      "output_dir": "assets/extracted-figures-all/s037",
+      "status": "completed",
+      "figures_count": 25,
+      "errors": []
+    },
+    {
+      "source_id": "S040",
+      "pdf_name": "s040-arxiv-org-Event Tensor- Dynamic Megakernels for LLM Serving.pdf",
+      "arxiv_id": "2604.13327",
+      "method": "arxiv_source",
+      "output_dir": "assets/extracted-figures-all/s040",
+      "status": "completed",
+      "figures_count": 18,
+      "errors": []
+    },
+    {
+      "source_id": "nvidia",
+      "pdf_name": "nvidia-agentic-inference-dynamo-2026-04-17.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/nvidia",
+      "status": "completed",
+      "figures_count": 8,
+      "errors": []
+    },
+    {
+      "source_id": "nvidia",
+      "pdf_name": "nvidia-disaggregated-llm-k8s-2026-03-23.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/nvidia",
+      "status": "completed",
+      "figures_count": 3,
+      "errors": []
+    },
+    {
+      "source_id": "nvidia",
+      "pdf_name": "nvidia-inference-transfer-library-2026-03-09.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/nvidia",
+      "status": "completed",
+      "figures_count": 4,
+      "errors": []
+    },
+    {
+      "source_id": "nvidia",
+      "pdf_name": "nvidia-cpu-gpu-memory-sharing-2025-09-05.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/nvidia",
+      "status": "completed",
+      "figures_count": 5,
+      "errors": []
+    },
+    {
+      "source_id": "nvidia",
+      "pdf_name": "nvidia-kv-bottlenecks-dynamo-2025-09-18.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/nvidia",
+      "status": "completed",
+      "figures_count": 4,
+      "errors": []
+    },
+    {
+      "source_id": "nvidia",
+      "pdf_name": "nvidia-wide-expert-parallelism-2025-12-18.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/nvidia",
+      "status": "completed",
+      "figures_count": 9,
+      "errors": []
+    },
+    {
+      "source_id": "nvidia",
+      "pdf_name": "nvidia-vera-cpu-ai-factories-2026-03.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/nvidia",
+      "status": "completed",
+      "figures_count": 8,
+      "errors": []
+    },
+    {
+      "source_id": "kimi",
+      "pdf_name": "kimi-agent-swarm-2026-04-11.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/kimi",
+      "status": "completed",
+      "figures_count": 5,
+      "errors": []
+    },
+    {
+      "source_id": "volcengine",
+      "pdf_name": "volcengine-mobile-use-agent-2026-04-29.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/volcengine",
+      "status": "completed",
+      "figures_count": 5,
+      "errors": []
+    },
+    {
+      "source_id": "astera",
+      "pdf_name": "astera-cxl-kv-cache-2025-11.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/astera",
+      "status": "completed",
+      "figures_count": 1,
+      "errors": []
+    },
+    {
+      "source_id": "STORAGEREVIEW",
+      "pdf_name": "storagereview-vera-rubin-ces-2026.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/storagereview",
+      "status": "completed",
+      "figures_count": 3,
+      "errors": []
+    },
+    {
+      "source_id": "S010",
+      "pdf_name": "s010-vllm-prefix-caching.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/s010",
+      "status": "completed",
+      "figures_count": 0,
+      "errors": [
+        "No figure pages detected"
+      ]
+    },
+    {
+      "source_id": "S011",
+      "pdf_name": "s011-prefix-aware-routing.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/s011",
+      "status": "completed",
+      "figures_count": 1,
+      "errors": []
+    },
+    {
+      "source_id": "S012",
+      "pdf_name": "s012-ray-prefix-aware-routing.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/s012",
+      "status": "completed",
+      "figures_count": 0,
+      "errors": [
+        "No figure pages detected"
+      ]
+    },
+    {
+      "source_id": "S014",
+      "pdf_name": "s014-nvidia-dynamo-intro-nixl-section.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/s014",
+      "status": "completed",
+      "figures_count": 12,
+      "errors": []
+    },
+    {
+      "source_id": "S015",
+      "pdf_name": "s015-lmcache-disaggregated-prefill.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/s015",
+      "status": "completed",
+      "figures_count": 0,
+      "errors": [
+        "No figure pages detected"
+      ]
+    },
+    {
+      "source_id": "S016",
+      "pdf_name": "s016-ray-prefix-cache-affinity-router.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/s016",
+      "status": "completed",
+      "figures_count": 5,
+      "errors": []
+    },
+    {
+      "source_id": "S017",
+      "pdf_name": "s017-ray-routing-policies.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/s017",
+      "status": "completed",
+      "figures_count": 2,
+      "errors": []
+    },
+    {
+      "source_id": "S020",
+      "pdf_name": "s020-llm-inference-benchmarking-2025-04.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/s020",
+      "status": "completed",
+      "figures_count": 7,
+      "errors": []
+    },
+    {
+      "source_id": "S021",
+      "pdf_name": "s021-prefill-decode-disaggregation.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/s021",
+      "status": "completed",
+      "figures_count": 2,
+      "errors": []
+    },
+    {
+      "source_id": "S022",
+      "pdf_name": "s022-prefix-aware-routing-cache-conscious.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/s022",
+      "status": "completed",
+      "figures_count": 1,
+      "errors": []
+    },
+    {
+      "source_id": "S023",
+      "pdf_name": "s023-prefill-decode-disaggregation-2026-04.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/s023",
+      "status": "completed",
+      "figures_count": 0,
+      "errors": [
+        "No figures found in document (pure text blog post)"
+      ]
+    },
+    {
+      "source_id": "S024",
+      "pdf_name": "s024-digitalocean-hidden-bottlenecks-2026-04.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/s024",
+      "status": "completed",
+      "figures_count": 11,
+      "errors": []
+    },
+    {
+      "source_id": "S025",
+      "pdf_name": "s025-digitalocean-llm-trilemma-2026-04.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/s025",
+      "status": "completed",
+      "figures_count": 6,
+      "errors": []
+    },
+    {
+      "source_id": "S029",
+      "pdf_name": "s029-kimi-k2-5-2026.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/s029",
+      "status": "completed",
+      "figures_count": 8,
+      "errors": []
+    },
+    {
+      "source_id": "S030",
+      "pdf_name": "s030-volcengine-mobile-use-agent.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/s030",
+      "status": "completed",
+      "figures_count": 5,
+      "errors": []
+    },
+    {
+      "source_id": "S033",
+      "pdf_name": "s033-nvidia-grace-cpu-2025-12.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/s033",
+      "status": "completed",
+      "figures_count": 8,
+      "errors": []
+    },
+    {
+      "source_id": "S034",
+      "pdf_name": "s034-developer-nvidia-com-Introducing New KV Cache Reuse Optimizations in NV.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/s034",
+      "status": "completed",
+      "figures_count": 7,
+      "errors": []
+    },
+    {
+      "source_id": "S038",
+      "pdf_name": "s038-blog-vllm-ai-vLLM V1- A Major Upgrade with 1.7x Speedup.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/s038",
+      "status": "completed",
+      "figures_count": 1,
+      "errors": []
+    },
+    {
+      "source_id": "S039",
+      "pdf_name": "s039-docs-vllm-ai-vLLM CUDA Graphs Design Document.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/s039",
+      "status": "completed",
+      "figures_count": 4,
+      "errors": []
+    },
+    {
+      "source_id": "S041",
+      "pdf_name": "s041-prefix-aware-routing-ray-serve-llm.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/s041",
+      "status": "completed",
+      "figures_count": 0,
+      "errors": [
+        "No figure pages detected"
+      ]
+    },
+    {
+      "source_id": "S042",
+      "pdf_name": "s042-docs-vllm-ai-Kv Events Subscriber — vLLM.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/s042",
+      "status": "completed",
+      "figures_count": 0,
+      "errors": [
+        "No figure pages detected"
+      ]
+    },
+    {
+      "source_id": "S043",
+      "pdf_name": "s043-developer-nvidia-com-5x Faster Time to First Token with NVIDIA TensorRT.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/s043",
+      "status": "completed",
+      "figures_count": 5,
+      "errors": []
+    },
+    {
+      "source_id": "S044",
+      "pdf_name": "s044-github-com-[Performance]- Improve Prefix Cache Hit Rate and R.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/s044",
+      "status": "completed",
+      "figures_count": 5,
+      "errors": []
+    },
+    {
+      "source_id": "S045",
+      "pdf_name": "s045-github-com-[Feature]- Support Persistent-Pinned Prefixes in P.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/s045",
+      "status": "completed",
+      "figures_count": 5,
+      "errors": []
+    },
+    {
+      "source_id": "S046",
+      "pdf_name": "s046-github-com-[Bug]- The performance for Prefix Caching is very .pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/s046",
+      "status": "completed",
+      "figures_count": 6,
+      "errors": []
+    },
+    {
+      "source_id": "S047",
+      "pdf_name": "s047-github-com-[Bug]- Prefix caching ignores visual input, causin.pdf",
+      "arxiv_id": null,
+      "method": "detect_figures",
+      "output_dir": "assets/extracted-figures-all/s047",
+      "status": "completed",
+      "figures_count": 5,
+      "errors": []
+    }
+  ]
+}
