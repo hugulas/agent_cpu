@@ -12,11 +12,9 @@
 
 最值得继续追踪的方向并不只是“更多优化”，而是几类更高阶的控制面主题。`state fabric` 指向 CPU、DPU、storage 和 runtime 的统一状态平面；`event-driven cache control` 指向缓存可见性与状态动作的事件化；`MoE balancing as control plane` 指向专家热点不再是局部优化，而是批级和跨节点调度问题；`graphification under highly dynamic serving` 则指向图化路线能否真正适应 agentic inference 的高动态性。只要这几条线继续发展，CPU 的控制面地位会被进一步坐实。
 
-### 11.4 本章吸收的单篇笔记
+### 11.4 本章主要参考文献
 
-- `D10`：S020, S021, S022
-- `D11`：S023, S024, S025
-- `D12-D17`：S034-S047
+本章主要依据以下文献展开：[17]-[22], [31]-[44]。
 
 ### 11.5 本章小结
 

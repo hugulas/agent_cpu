@@ -20,11 +20,9 @@ Arm 的信号最像在定义一个新品类。`AGI CPU` 的表述已经不只是
 
 四家的分歧在于：NVIDIA 更偏封闭式 `state fabric`，AMD 更偏开放式 `balanced host control layer`，Intel 更偏企业异构中的 `host-and-action hub`，Arm 更偏新的 `AI-native orchestration silicon`。它们的收敛点则很明确：都在围绕带宽、coherence、data movement、deterministic multi-tenancy 和 node-level coordination 重写 CPU 角色。也就是说，下一阶段竞争点并不是谁更像传统服务器 CPU，而是谁更能把 CPU 固化成推理状态控制面的标准形态。
 
-### 10.6 本章吸收的单篇笔记
+### 10.6 本章主要参考文献
 
-- `D08`：S031, S032, S033
-- 厂商专题：`vendor-ai-head-cpu-design-insight.md`
-- 下一步判断：`vendor-next-step-judgment.md`
+本章主要依据以下文献展开：[14]-[16]，并结合厂商路线专题材料进行归纳。
 
 ### 10.7 本章小结
 
