@@ -10,9 +10,9 @@
 
 | 判断 | 直接支撑材料 | 关键数字或图 |
 | --- | --- | --- |
-| 分布式推理 CPU 的第一类需求是更强的 transfer stack，而不是更强的通用算力 | `S001 S003 S009 S014` | NIXL unified API；KV transfer；跨池 PraaS |
-| 平台 CPU 已在为 orchestration / data movement 角色增配带宽与一致性互连 | `S031 S032 S033` | Vera `1.2TB/s`；Grace / Vera `1.8TB/s` NVLink-C2C；uniform memory access |
-| AI CPU 的关键指标是尾延迟稳定性、并发 completion 能力、内存带宽与状态可见性 | `S001 S003 S008 S009` | KV-aware placement；non-blocking transfer；expert residency / state orchestration |
+| 分布式推理 CPU 的第一类需求是更强的 transfer stack，而不是更强的通用算力 | `S001 (Prefill-as-a-Service) S003 (NVIDIA Dynamo agentic) S009 (待确认材料) S014 (NVIDIA Dynamo NIXL)` | NIXL unified API；KV transfer；跨池 PraaS |
+| 平台 CPU 已在为 orchestration / data movement 角色增配带宽与一致性互连 | `S031 (NVIDIA Vera CPU) S032 (NVIDIA Rubin Platform) S033 (NVIDIA Grace CPU)` | Vera `1.2TB/s`；Grace / Vera `1.8TB/s` NVLink-C2C；uniform memory access |
+| AI CPU 的关键指标是尾延迟稳定性、并发 completion 能力、内存带宽与状态可见性 | `S001 (Prefill-as-a-Service) S003 (NVIDIA Dynamo agentic) S008 (FluxMoE) S009 (待确认材料)` | KV-aware placement；non-blocking transfer；expert residency / state orchestration |
 
 ### 2. transfer stack：为什么网络与主机栈会直接变成 CPU 规格问题
 
@@ -29,7 +29,7 @@
 
 ### 图 1：分布式推理 CPU 首先要变成 transfer orchestrator
 
-<img src="../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/cpu-gpu-unified-memory.webp" alt="CPU-GPU unified memory and transfer stack" width="760">
+![CPU-GPU unified memory and transfer stack](../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/cpu-gpu-unified-memory.webp)
 
 图 1 的价值在于强调：一旦状态需要跨池移动，CPU 面对的第一类硬约束就是如何稳定地驱动和观察 transfer，而不是如何多跑一点通用计算。[2][4]
 
@@ -43,7 +43,7 @@ Vera、Rubin 和 Grace 的公开资料给了平台层的强证据。Vera 提供 
 
 ### 图 2：平台 CPU 规格已经在对齐 orchestration / movement 角色
 
-<img src="../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/nvidia-vera-cpu-architecture.png" alt="NVIDIA Vera CPU architecture for AI factories" width="760">
+![NVIDIA Vera CPU architecture for AI factories](../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/nvidia-vera-cpu-architecture.png)
 
 图 2 支撑的是平台层的因果：当 CPU 被明确定位为数据移动与控制节点，带宽、核心组织和互连形态都会围绕这一角色变化。[5][6]
 

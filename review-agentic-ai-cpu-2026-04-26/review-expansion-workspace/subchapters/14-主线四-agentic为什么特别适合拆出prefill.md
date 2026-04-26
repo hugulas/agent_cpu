@@ -57,9 +57,9 @@ Agentic 场景里，大量请求不是彼此完全独立的。它们往往共享
 
 | 判断 | 直接支撑材料 | 关键数字或图 |
 | --- | --- | --- |
-| agentic workload 比传统 chat 更容易呈现 prefill-first 形态 | `S001 S028 S029 S030` | `100` sub-agents；`1,500+` tool calls；visual / GUI multi-session 形态 |
-| shared prefix 在多代理与工具链场景中是结构性存在，而不是偶然重复 | `S028 S029 S030` | 公共 role / tool schema / session trunk；`4.5x` sequential wall-clock reduction |
-| remote prefill 之所以在 2025H2+ 变现实，是因为 reduced-KV、prefix reuse 与 KV lifecycle 已经到位 | `S001 S029 S030` | PD/PraaS 架构图；visual-agent burst；跨池恢复逻辑 |
+| agentic workload 比传统 chat 更容易呈现 prefill-first 形态 | `S001 (Prefill-as-a-Service) S028 (Kimi Agent Swarm) S029 (Kimi K2.5) S030 (Mobile Use Agent)` | `100` sub-agents；`1,500+` tool calls；visual / GUI multi-session 形态 |
+| shared prefix 在多代理与工具链场景中是结构性存在，而不是偶然重复 | `S028 (Kimi Agent Swarm) S029 (Kimi K2.5) S030 (Mobile Use Agent)` | 公共 role / tool schema / session trunk；`4.5x` sequential wall-clock reduction |
+| remote prefill 之所以在 2025H2+ 变现实，是因为 reduced-KV、prefix reuse 与 KV lifecycle 已经到位 | `S001 (Prefill-as-a-Service) S029 (Kimi K2.5) S030 (Mobile Use Agent)` | PD/PraaS 架构图；visual-agent burst；跨池恢复逻辑 |
 
 ### 1. 本章核心判断
 
@@ -78,7 +78,7 @@ Agentic 场景里，大量请求不是彼此完全独立的。它们往往共享
 
 ### 图 1：agentic workflow 的真正压力往往来自反复触发的前缀阶段
 
-<img src="../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/cpu-centric-agentic-workflow.png" alt="CPU-centric agentic workflow" width="760">
+![CPU-centric agentic workflow](../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/cpu-centric-agentic-workflow.png)
 
 图 1 用来支撑一个核心转折：agentic 流程不是单次长 decode，而是反复发生阶段切换、状态恢复和前缀重入，因此 prefill 更容易成为第一类独立优化对象。[2][3][4]
 
@@ -90,11 +90,11 @@ Agentic 场景里，大量请求不是彼此完全独立的。它们往往共享
 
 ### 4. remote prefill 为什么在 2025H2 之后变得现实
 
-过去即使意识到 prefill 和 decode 的资源特征不同，把它们真正拆到不同节点或不同池上仍常受限于 KV 太大、带宽太高、状态传输不可承受。但 `S001` 已经表明，PraaS 讨论的对象不再局限于同构单集群，而是跨数据中心、异构集群和商品以太网。[1] 这意味着工程界已经开始默认：只要前缀足够值钱、共享足够明显、回传路径足够可控，remote prefill 是可以被认真考虑的。
+过去即使意识到 prefill 和 decode 的资源特征不同，把它们真正拆到不同节点或不同池上仍常受限于 KV 太大、带宽太高、状态传输不可承受。但 `S001 (Prefill-as-a-Service)` 已经表明，PraaS 讨论的对象不再局限于同构单集群，而是跨数据中心、异构集群和商品以太网。[1] 这意味着工程界已经开始默认：只要前缀足够值钱、共享足够明显、回传路径足够可控，remote prefill 是可以被认真考虑的。
 
 ### 图 2：从 tool-call / branch-resume 视角看，prefill 已经像独立服务动作
 
-<img src="../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/agentic-tool-call-offload-prefetch.svg" alt="Agentic tool call prefill and offload workflow" width="760">
+![Agentic tool call prefill and offload workflow](../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/agentic-tool-call-offload-prefetch.svg)
 
 图 2 支撑本节的第三个判断：agentic 负载下的 prefill 已经更像被频繁触发、可独立调度的服务动作，而不只是每个请求开头顺便做的一段计算。[1][4]
 

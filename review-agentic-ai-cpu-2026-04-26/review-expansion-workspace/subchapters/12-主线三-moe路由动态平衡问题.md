@@ -10,9 +10,9 @@ MoE 在服务化推理里的关键 host-side 问题，不只是“冷 expert 怎
 
 | 判断 | 直接支撑材料 | 关键数字或图 |
 | --- | --- | --- |
-| expert skew 比单次 cold miss 更能决定长期吞吐与尾延迟 | `S035 S036 S037` | wide expert parallelism；fine-grained residuals；speculative overlap |
-| 动态平衡是跨 token、跨批次、跨时间窗的问题，因此天然回到 CPU / control plane | `S035 S036` | topology-aware placement；history-guided prefetch |
-| 实际对抗 skew 的方法不是只改 gate，而是改 residency、拓扑和同步窗口 | `S035 S036 S037` | rack-scale placement；expert map；overlap hiding |
+| expert skew 比单次 cold miss 更能决定长期吞吐与尾延迟 | `S035 (Wide Expert Parallelism) S036 (FineMoE) S037 (SpecMoEOff)` | wide expert parallelism；fine-grained residuals；speculative overlap |
+| 动态平衡是跨 token、跨批次、跨时间窗的问题，因此天然回到 CPU / control plane | `S035 (Wide Expert Parallelism) S036 (FineMoE)` | topology-aware placement；history-guided prefetch |
+| 实际对抗 skew 的方法不是只改 gate，而是改 residency、拓扑和同步窗口 | `S035 (Wide Expert Parallelism) S036 (FineMoE) S037 (SpecMoEOff)` | rack-scale placement；expert map；overlap hiding |
 
 ### 2. 为什么 expert skew 是比冷启动更棘手的问题
 
@@ -29,7 +29,7 @@ MoE 在服务化推理里的关键 host-side 问题，不只是“冷 expert 怎
 
 ### 图 1：wide EP 的工业信号是“热点与拓扑”已经高于单次 miss
 
-<img src="../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/deepep-normal-dispatch.png" alt="DeepEP normal dispatch and expert topology" width="760">
+![DeepEP normal dispatch and expert topology](../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/deepep-normal-dispatch.png)
 
 图 1 用来支撑一个核心判断：当分发与聚合已经需要显式考虑拓扑和并行组织时，MoE 的主要难题就不再是局部装载，而是长期平衡。[1]
 
@@ -56,7 +56,7 @@ MoE 在服务化推理里的关键 host-side 问题，不只是“冷 expert 怎
 
 ### 图 2：动态平衡的目标不是“绝对均匀”，而是减少热点路径的系统放大
 
-<img src="../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/nvidia-wide-ep-moe-2025.webp" alt="Wide expert parallelism and topology-aware placement" width="760">
+![Wide expert parallelism and topology-aware placement](../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/nvidia-wide-ep-moe-2025.webp)
 
 图 2 的重点不是展示某个固定拓扑，而是说明：一旦组织尺度升到 NVL72 / rack-scale，路由平衡就已经不可能只靠模型内部局部逻辑解决。[1]
 

@@ -19,7 +19,7 @@
   - 方案 B：如果内容重复或质量不足，直接删除。
   - 当前放在参考文献之后的形态完全不可接受。
 
-**2. 图片语法不一致**
+**2. 图片语法不一致** ✅ 已修复：已统一为 Markdown `![alt](path)` 语法
 - 同 05/06，使用 HTML `<img>` 标签。
 - **建议**：统一为 Markdown 图片语法。
 
@@ -29,7 +29,7 @@
 - 图 1 使用的是 `nvidia-dynamo-agentic-kv-readwrite-2026.webp`（与 05 图 1 相同），但图注说"不是 APC 的实现图，而是用来解释为什么 prefix reuse 会迅速变成控制面问题"。
 - **建议**：如果这张图不是 APC 特有的，而是解释 agentic workload 下复用压力的通用图，建议更换为更贴近 APC 本身的图（如 vLLM prefix cache manager 结构图或 TensorRT-LLM early reuse 流程图），否则容易让读者困惑"为什么这里放了一张 Dynamo 的图"。
 
-**4. S 编号未标注全称**
+**4. S 编号未标注全称** ✅ 已修复：判断表与正文中均已标注全称
 - `S010` `S043` 未标注全称。
 - **建议**：`S010`（vLLM Automatic Prefix Caching）、`S043`（TensorRT-LLM KV Cache Early Reuse）。
 

@@ -6,9 +6,9 @@
 
 | 判断 | 直接支撑材料 | 关键数字或图 |
 | --- | --- | --- |
-| APC 应被理解为第一代状态复用控制平面，而不是局部小优化 | `S010 S043` | full-block prefix caching；TTFT 最多 `5x` |
-| APC 的第一批系统收益来自避免重复 prefill，而不是“平均省一点算力” | `S043` | block size `64 -> 8` tokens 最多再增 `7%` |
-| APC 的边界在于它主要处理 exact shared prefix，本身不解决分布式路由和长期保留 | `S010 S043` | KV cache manager / LRU eviction；early reuse 仍需更细粒度机制 |
+| APC 应被理解为第一代状态复用控制平面，而不是局部小优化 | `S010 (vLLM APC) S043 (TensorRT-LLM early reuse)` | full-block prefix caching；TTFT 最多 `5x` |
+| APC 的第一批系统收益来自避免重复 prefill，而不是“平均省一点算力” | `S043 (TensorRT-LLM early reuse)` | block size `64 -> 8` tokens 最多再增 `7%` |
+| APC 的边界在于它主要处理 exact shared prefix，本身不解决分布式路由和长期保留 | `S010 (vLLM APC) S043 (TensorRT-LLM early reuse)` | KV cache manager / LRU eviction；early reuse 仍需更细粒度机制 |
 
 ### 1. 本章核心判断
 
@@ -26,7 +26,7 @@ APC 真正完成了三件此前并不显式的事：
 
 ### 图 1：第一代 prefix reuse 的价值首先体现为 TTFT 下降
 
-<img src="../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/nvidia-dynamo-agentic-kv-readwrite-2026.webp" alt="Agentic KV reuse and routing" width="760">
+![Agentic KV reuse and routing](../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/nvidia-dynamo-agentic-kv-readwrite-2026.webp)
 
 图 1 不是 APC 的实现图，而是用来解释为什么 prefix reuse 会迅速变成控制面问题：agentic workload 下共享前缀和高读写比叠加，使“避免重复 prefill”直接决定 TTFT 与调度压力。[2][3]
 
@@ -34,7 +34,7 @@ APC 真正完成了三件此前并不显式的事：
 
 第一代 APC 最擅长处理的是 `exact` 或 `near-exact shared prefix`。对于固定 system prompt、工具 schema、共享角色说明、标准模板和子代理公共启动上下文，这类机制可以直接避免重复 prefill。对 agentic inference 来说，这一步尤其关键，因为 shared prefix 不是偶然存在，而是结构性存在。
 
-`S043` 的 early reuse 结果表明，这种收益已经不是理论推断，而是可以显著改写首 token 延迟的现实优化。[2] 因此，APC 的首要价值不是“平均省下一点算力”，而是把状态复用正式引入了服务系统的关键路径。
+`S043 (TensorRT-LLM early reuse)` 的 early reuse 结果表明，这种收益已经不是理论推断，而是可以显著改写首 token 延迟的现实优化。[2] 因此，APC 的首要价值不是“平均省下一点算力”，而是把状态复用正式引入了服务系统的关键路径。
 
 ### 4. APC 没有解决什么
 
@@ -49,7 +49,7 @@ APC 真正完成了三件此前并不显式的事：
 
 ### 图 2：APC 的边界来自 block 粒度和 exact prefix 假设
 
-<img src="../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/agentic-kv-read-write-ratio.webp" alt="KV read-write reuse pressure" width="760">
+![KV read-write reuse pressure](../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/agentic-kv-read-write-ratio.webp)
 
 图 2 强调 APC 为什么会迅速触及边界：当复用压力来自大量分叉、resume 和跨 worker 请求时，仅有“本地 exact prefix 命中”已经不够支撑整个系统。[2][3]
 

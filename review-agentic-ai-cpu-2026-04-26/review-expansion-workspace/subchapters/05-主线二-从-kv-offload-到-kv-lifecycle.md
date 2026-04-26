@@ -6,9 +6,9 @@
 
 | 判断 | 直接支撑材料 | 关键数字或图 |
 | --- | --- | --- |
-| agentic workload 已把 KV 从“容量补丁”变成“状态生命周期对象” | `S003 S006 S007 S034` | `11.7x` read/write ratio；NOSA memory hierarchy；ScoutAttention layer-ahead 路径 |
-| KV 的主价值已从一次写入转向长期保留、恢复和复用 | `S003 S034` | priority-based eviction；token-range retention；event API |
-| CPU 的职责因此从搬运者升级为 retention / prefetch / resume 规划器 | `S006 S007` | NOSA 最高 `2.3x` decode throughput；ScoutAttention 约 `2.1x` speedup |
+| agentic workload 已把 KV 从“容量补丁”变成“状态生命周期对象” | `S003 (NVIDIA Dynamo agentic) S006 (NOSA) S007 (ScoutAttention) S034 (TensorRT-LLM KV reuse)` | `11.7x` read/write ratio；NOSA memory hierarchy；ScoutAttention layer-ahead 路径 |
+| KV 的主价值已从一次写入转向长期保留、恢复和复用 | `S003 (NVIDIA Dynamo agentic) S034 (TensorRT-LLM KV reuse)` | priority-based eviction；token-range retention；event API |
+| CPU 的职责因此从搬运者升级为 retention / prefetch / resume 规划器 | `S006 (NOSA) S007 (ScoutAttention)` | NOSA 最高 `2.3x` decode throughput；ScoutAttention 约 `2.1x` speedup |
 
 ### 1. 本章核心判断
 
@@ -16,7 +16,7 @@
 
 ### 2. 为什么“容量问题”这个旧定义已经不够
 
-早期 KV offload 的出发点很简单：上下文更长、批次更大、HBM 不够，于是把问题表述成“如何把 KV 搬到 CPU memory 或 storage”。但 `S006` 和 `S007` 这类材料共同说明，真实瓶颈并不只是容量，而是**locality engineering 与 transfer domination**。NOSA 把 sparse attention 从一开始就设计成 offload-friendly，目标不是只减少 attention FLOPs，而是减少必须跨层级搬运的 selected KV；ScoutAttention 更进一步，让 CPU 在 layer-ahead 阶段参与预计算，证明 CPU 可以从被动搬运者前移成恢复路径的一部分。[2][3]
+早期 KV offload 的出发点很简单：上下文更长、批次更大、HBM 不够，于是把问题表述成“如何把 KV 搬到 CPU memory 或 storage”。但 `S006 (NOSA)` 和 `S007 (ScoutAttention)` 这类材料共同说明，真实瓶颈并不只是容量，而是**locality engineering 与 transfer domination**。NOSA 把 sparse attention 从一开始就设计成 offload-friendly，目标不是只减少 attention FLOPs，而是减少必须跨层级搬运的 selected KV；ScoutAttention 更进一步，让 CPU 在 layer-ahead 阶段参与预计算，证明 CPU 可以从被动搬运者前移成恢复路径的一部分。[2][3]
 
 换句话说，旧定义只回答“KV 放哪儿”；新定义必须同时回答：
 
@@ -27,13 +27,13 @@
 
 ### 图 1：agentic 负载把 KV 的读路径推成主路径
 
-<img src="../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/agentic-kv-read-write-ratio.webp" alt="Agentic KV read-write ratio" width="760">
+![Agentic KV read-write ratio](../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/agentic-kv-read-write-ratio.webp)
 
 图 1 的意义在于把“KV lifecycle”从概念落到访问形状上：当读写比达到 `11.7x` 量级时，系统成本中心自然会从初次写入转向保留、恢复和复用。[1]
 
 ### 3. `write-once-read-many` 为什么会改写整个问题定义
 
-agentic workload 下的大量状态都带有明显的 `write-once-read-many` 特征。system prompt、tool schema、session trunk、分支上下文和多代理共享前缀往往只在第一次 prefill 时完整写入，但在后续几十次请求里会被多次恢复。`S034` 已经把这类现象工程化为 priority-based KV eviction、token-range retention 与 KV event API，说明工业界不再把 KV 当作“一次性中间结果”，而是把它视为需要显式治理的生命周期对象。[4]
+agentic workload 下的大量状态都带有明显的 `write-once-read-many` 特征。system prompt、tool schema、session trunk、分支上下文和多代理共享前缀往往只在第一次 prefill 时完整写入，但在后续几十次请求里会被多次恢复。`S034 (TensorRT-LLM KV reuse)` 已经把这类现象工程化为 priority-based KV eviction、token-range retention 与 KV event API，说明工业界不再把 KV 当作“一次性中间结果”，而是把它视为需要显式治理的生命周期对象。[4]
 
 这也是为什么 lifecycle 比 offload 更准确。因为生命周期视角覆盖的是整条链路：
 
@@ -51,7 +51,7 @@ agentic workload 下的大量状态都带有明显的 `write-once-read-many` 特
 
 #### 4.1 retention 决定高价值状态能否跨轮次保留
 
-如果一个 prefix 或 session trunk 后续仍会被访问，过早回收就会把未来收益直接抹掉。`S034` 对 pinned / priority / token-range retention 的强调，说明工业现实已经不是“统一 LRU 是否够用”，而是“高价值块是否该按业务价值被区别对待”。[4]
+如果一个 prefix 或 session trunk 后续仍会被访问，过早回收就会把未来收益直接抹掉。`S034 (TensorRT-LLM KV reuse)` 对 pinned / priority / token-range retention 的强调，说明工业现实已经不是“统一 LRU 是否够用”，而是“高价值块是否该按业务价值被区别对待”。[4]
 
 #### 4.2 prefetch 决定恢复能否隐藏在关键路径之外
 
@@ -63,7 +63,7 @@ ScoutAttention 的核心启发不是单纯把 KV 搬回，而是让 CPU 通过 l
 
 ### 图 2：KV 生命周期已经天然跨越多层级内存
 
-<img src="../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/agentic-kv-memory-hierarchy.svg" alt="KV memory hierarchy" width="760">
+![KV memory hierarchy](../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/agentic-kv-memory-hierarchy.svg)
 
 图 2 强调 lifecycle 的工程本质不是单次 offload，而是状态在 HBM、CPU memory、远端层级之间持续流动。CPU 的职责因此更像层级状态管理，而不是一次性 DMA 触发器。[2][3]
 
@@ -76,7 +76,7 @@ ScoutAttention 的核心启发不是单纯把 KV 搬回，而是让 CPU 通过 l
 - `warm-tier manager`：安排哪些状态留在近端 DRAM 或远端 warm tier；
 - `prefetch trigger`：根据访问迹象提前组织恢复。
 
-这和传统意义上的“host CPU 发几个 kernel”已经不是同一个角色。`S003`、`S006`、`S007`、`S034` 一起给出的稳定结论是：**KV 的主要难点已从容量管理转向生命周期治理，而生命周期治理天然是 control-plane 问题。**[1][2][3][4]
+这和传统意义上的“host CPU 发几个 kernel”已经不是同一个角色。`S003 (NVIDIA Dynamo agentic)`、`S006 (NOSA)`、`S007 (ScoutAttention)`、`S034 (TensorRT-LLM KV reuse)` 一起给出的稳定结论是：**KV 的主要难点已从容量管理转向生命周期治理，而生命周期治理天然是 control-plane 问题。**[1][2][3][4]
 
 ### 6. 小结
 

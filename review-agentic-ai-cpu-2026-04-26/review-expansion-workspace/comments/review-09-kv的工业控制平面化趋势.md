@@ -29,13 +29,13 @@
   - 这样 09 将从当前简陋的 5 节扩展为结构丰满的 8 节。
   - 方案 B：如果认为当前前 84 行已足够，则直接删除 85-197 行。
 
-**3. 图片语法不一致**
+**3. 图片语法不一致** ✅ 已修复：已统一为 Markdown `![alt](path)` 语法
 - 同前几章。
 - **建议**：统一为 Markdown 图片语法。
 
 ### 【中优先级】
 
-**4. S 编号未标注全称**
+**4. S 编号未标注全称** ✅ 已修复：判断表与正文中均已标注全称
 - `S003` `S014` `S034` `S042` 未标注全称。
 - **建议**：`S003`（NVIDIA Dynamo agentic inference）、`S014`（NVIDIA Dynamo NIXL）、`S034`（TensorRT-LLM KV reuse）、`S042`（vLLM KV Events Subscriber）。
 

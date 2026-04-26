@@ -32,13 +32,13 @@
     - 删除当前第 86-93 行的冗余论述
   - 这样 15 的结构将更加丰满。
 
-**3. 图片语法不一致**
+**3. 图片语法不一致** ✅ 已修复：已统一为 Markdown `![alt](path)` 语法
 - 同其他子章节。
 - **建议**：统一为 Markdown 图片语法。
 
 ### 【中优先级】
 
-**4. S 编号未标注全称**
+**4. S 编号未标注全称** ✅ 已修复：判断表与正文中均已标注全称
 - `S001` `S002` `S003` `S015` `S023` 未标注全称。
 - **建议**：`S001`（Prefill-as-a-Service）、`S002`（K8s disaggregated LLM）、`S003`（NVIDIA Dynamo）、`S015`（LMCache disaggregated prefill）、`S023`（Prefill-Decode Disaggregation 审慎材料）。
 

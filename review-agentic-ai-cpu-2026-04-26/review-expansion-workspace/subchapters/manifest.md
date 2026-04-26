@@ -14,13 +14,44 @@
 
 | S 编号 | 材料名称 | 类型 | 日期 |
 | --- | --- | --- | --- |
+| S001 | Prefill-as-a-Service: KVCache Could Go Cross-Datacenter (arXiv 2604.15039) | 学术论文 | 2026-04 |
+| S002 | Deploying Disaggregated LLM Inference on Kubernetes (NVIDIA) | 技术博客 | 2026-03 |
+| S003 | Full-Stack Optimizations for Agentic Inference with NVIDIA Dynamo | 技术博客 | 2026-04 |
 | S005 | Characterizing CPU-Induced Slowdowns in Multi-GPU LLM Inference (arXiv 2603.22774) | 学术论文 | 2026-03 |
+| S006 | NOSA: Native and Offloadable Sparse Attention (arXiv 2510.13602) | 学术论文 | 2025-10 |
+| S007 | ScoutAttention: Efficient KV Cache Offloading via Layer-Ahead CPU Pre-computation (arXiv 2603.27138) | 学术论文 | 2026-03 |
+| S008 | FluxMoE: Decoupling Expert Residency for High-Performance MoE Serving (arXiv 2604.02715) | 学术论文 | 2026-04 |
+| S009 | *(待确认，子章节 16 判断表中引用，sources-index 中无明确条目)* | — | — |
+| S010 | vLLM Automatic Prefix Caching | 官方文档 | current |
+| S011 | BentoML: Prefix-Aware Routing | 技术文档 | current |
+| S013 | Kimi Linear: An Expressive, Efficient Attention Architecture (arXiv 2510.26692) | 学术论文 | 2025-10 |
+| S014 | NVIDIA Dynamo: Introducing NIXL (Inference Transfer Library) | 技术博客 | 2026-03 |
+| S015 | LMCache: Disaggregated Prefill Quickstart | 技术文档 | current |
+| S016 | Ray Serve: PrefixCacheAffinityRouter | 技术文档 | 2026/current |
 | S021 | BentoML: Prefill-Decode Disaggregation | 技术文档 | 2026/current |
+| S023 | Prefill-Decode Disaggregation: Splitting the Two Stages of Inference (Optiverse) | 技术博客 | 2026-04 |
 | S024 | DigitalOcean: Hidden Bottlenecks in LLM Inference and How to Fix Them | 技术博客 | 2026-04 |
 | S025 | DigitalOcean: The LLM Inference Trilemma | 技术博客 | 2026-04 |
+| S028 | Kimi Agent Swarm: 100 AI Agents | 官方博客 | 2026-04 |
+| S029 | Kimi K2.5: Visual Agentic Intelligence | 官方博客 | 2026 |
+| S030 | Volcengine Mobile Use Agent / 多模态 Agent 形态材料 | 技术博客 | 2026 |
+| S031 | NVIDIA Vera CPU: High Performance for AI Factories | 官方博客 | 2026-03 |
+| S032 | Inside the NVIDIA Rubin Platform | 官方博客 | 2026-01 |
+| S033 | NVIDIA Grace CPU: High Bandwidth for Modern Data Centers | 官方博客 | 2025-12 |
+| S034 | TensorRT-LLM: New KV Cache Reuse Optimizations | 官方博客 | 2025 |
+| S035 | Scaling Large MoE with Wide Expert Parallelism on NVL72 | 官方博客 | 2025-12 |
+| S036 | FineMoE: Modeling Fine-Grained MoE Residuals for Expert Prefetching (arXiv 2502.05370) | 学术论文 | 2026 |
+| S037 | SpecMoEOff: Accelerating MoE Inference via Speculative Expert Offloading (arXiv 2508.21706) | 学术论文 | 2025-08 |
 | S038 | vLLM V1: A Major Upgrade with 1.7x Speedup | 官方博客 | 2025-01 |
 | S039 | vLLM CUDA Graphs Design Document | 官方文档 | current |
 | S040 | Event Tensor: Dynamic Megakernels for LLM Serving (arXiv 2604.13327) | 学术论文 | 2026-04 |
+| S041 | Anyscale / Ray Serve: Prefix-Aware Routing | 技术文档 | current |
+| S042 | vLLM KV Events Subscriber | 官方文档 | current |
+| S043 | TensorRT-LLM: 5x Faster TTFT with KV Cache Early Reuse | 官方博客 | 2024-11 |
+| S044 | vLLM GitHub Issue #24394: Dirty Cache Impact | 工程反馈 | 2025-09 |
+| S045 | vLLM GitHub Issue #23083: Persistent/Pinned Prefixes | 工程反馈 | 2025-08 |
+| S046 | vLLM GitHub Issue #3918: Unstable Prefix Cache Performance | 工程反馈 | 2024-05 |
+| S047 | vLLM GitHub Issue #20261: Multimodal Cache Identity Bug | 工程反馈 | 2025-06 |
 
 | Order | File | Parent | Focus |
 | --- | --- | --- | --- |

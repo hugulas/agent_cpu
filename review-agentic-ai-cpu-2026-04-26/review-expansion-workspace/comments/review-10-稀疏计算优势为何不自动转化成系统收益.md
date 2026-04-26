@@ -23,13 +23,13 @@
   - 方案 A（推荐）：以第 78-139 行的正式版本为骨架，将第 16-76 行中独有的精华内容（如更详细的 cold expert 代价清单、expert skew 的 hotspot 分析）整合进正式版本，然后删除第 16-76 行。
   - 方案 B：以第 16-76 行为主，补充判断表和章节编号，删除 78-139 行。但此版本缺少引用标记，不如正式版本规范。
 
-**2. 图片语法不一致**
+**2. 图片语法不一致** ✅ 已修复：已统一为 Markdown `![alt](path)` 语法
 - 同前几章，使用 HTML `<img>` 标签。
 - **建议**：统一为 Markdown 图片语法。
 
 ### 【中优先级】
 
-**3. S 编号未标注全称**
+**3. S 编号未标注全称** ✅ 已修复：判断表与正文中均已标注全称
 - 判断表中使用 `S008 S035 S036 S037`，正文中提到 `FluxMoE` `FineMoE` `SpecMoEOff` `Wide Expert Parallelism`，但没有明确与 S 编号对应。
 - **建议**：`S008`（FluxMoE）、`S035`（Wide Expert Parallelism）、`S036`（FineMoE）、`S037`（SpecMoEOff）。
 
