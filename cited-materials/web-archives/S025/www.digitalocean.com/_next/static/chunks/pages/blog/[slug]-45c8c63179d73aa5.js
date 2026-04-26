@@ -1,0 +1,1 @@
+(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[67812],{84271:(_,n,u)=>{(window.__NEXT_P=window.__NEXT_P||[]).push(["/blog/[slug]",function(){return u(73583)}])}},_=>{_.O(0,[90652,76617,71406,73583,90636,46593,38792],()=>_(_.s=84271)),_N_E=_.O()}]);
