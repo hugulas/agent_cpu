@@ -4,40 +4,85 @@
 
 ### 1. 本章核心判断
 
-`Prefill-Decode Disaggregation` 的真正升级，不是把两类 worker 分开这么简单，而是它正在从单集群内部优化，演化成 **跨池、跨集群、甚至跨数据中心的控制平面问题**。  
-`Prefill-as-a-Service` 是这一升级的最清晰信号。
+`Prefill-Decode Disaggregation` 的真正升级，不是把两类 worker 分开这么简单，而是它正在从单集群内部优化，演化成 **跨池、跨集群、甚至跨数据中心的控制平面问题**。`Prefill-as-a-Service` 是这一升级的最清晰信号。[1][2][3][4][5]
+
+### 0. 判断-证据对齐表
+
+| 判断 | 直接支撑材料 | 关键数字或图 |
+| --- | --- | --- |
+| PD 分离已经从“单集群角色拆分”升级为“跨池状态编排” | `S001 S002 S003 S015 S023` | throughput `+54%`；P90 TTFT `-64%`；相对朴素异构基线 `+32%` |
+| 单集群 PD 主要解决 compute-bound prefill 与 memory-bound decode 的资源错配 | `S002 S015 S023` | ingress / prefill / decode worker 拆分；prefiller / decoder / proxy 架构 |
+| agentic workload 把 KV handoff、pool selection、远端回传和带宽取舍推成 CPU 的核心职责 | `S001 S003` | KV-aware placement；priority scheduling；跨池 / 跨域 Prefill-as-a-Service |
 
 ### 2. 单集群 PD 解决的是什么问题
 
-单集群 PD 的出发点比较直接：
+单集群 PD 的出发点比较直接：prefill 更偏 compute-bound，decode 更偏 memory-bound，把两者放在同一个池里容易互相污染。Kubernetes 的 disaggregated LLM inference 方案、LMCache 的 disaggregated prefill example，以及更审慎的 PD 边界讨论，共同把这套基础逻辑讲清楚了：ingress-router、prefill worker、decode worker 可以被拆开，prefiller / decoder / proxy 可以构成单机房内的阶段分工。[2][4][5]
 
-- prefill 更偏 compute-bound
-- decode 更偏 memory-bound
-- 两者放在同一个池里会互相干扰
+在这一阶段，CPU 的新增职责还相对有限，主要是 ingress routing、pool selection 和 KV handoff。也就是说，它更像是**同一机房内的阶段拆分器**。
 
-所以最早的 PD 分离，主要解决：
+### 图 1：单集群 PD 的第一步是把 prefill 与 decode worker 角色分开
 
-- 资源属性不匹配
-- 长短阶段互相污染
-- worker role 不清晰
+<img src="../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/vllm-disagg-prefill-overview.jpg" alt="Disaggregated prefill/decode overview" width="760">
 
-在这一阶段，CPU 的新增职责还相对有限，主要是：
-
-- ingress routing
-- pool selection
-- KV handoff
-
-也就是说，它更像是 **同一机房内的阶段分工**。
+图 1 支撑的是基础阶段：PD 分离首先解决的是资源属性不匹配，而不是跨域控制。此时 CPU 仍主要处理本地 handoff。[2][4][5]
 
 ### 3. 为什么 agentic inference 会把单集群 PD 推向更远
 
-agentic workload 会同时强化几种特征：
+agentic workload 会同时强化 prefill-first、shared prefix、高频 resume、多会话并发和更高的跨请求状态复用价值。于是，单集群 PD 的原始收益就会被进一步放大，但同时也会暴露出新的限制：
 
-- prefill-first
-- shared prefix
-- 高频 resume
-- 多会话并发
-- 更高的跨请求状态复用价值
+- 哪个 prefill 池更适合当前请求；
+- 共享前缀应该留在哪个池里；
+- prefill 结果回传时是否会压垮链路；
+- decode 池的局部最优是否会与全局状态位置冲突。
+
+这正是 `S003` 强调 KV-aware placement 与 priority scheduling 的原因。对于 agentic inference，阶段分离很快就不再只是 worker 角色分工，而会演化成状态位置与阶段位置的联合优化。[3]
+
+### 4. PraaS 为什么是实质性升级，而不是换个名字
+
+`S001` 给出的最强信号，是 PraaS 已把讨论对象扩展到跨数据中心、异构集群与商品以太网，并且给出定量收益：相对同构 PD 吞吐 `+54%`、P90 TTFT `-64%`，相对朴素异构基线吞吐 `+32%`。[1] 这说明 PraaS 的关键并不是“把 prefill 单独部署”这件事本身，而是：
+
+- prefill 节点可以被当作共享服务；
+- 状态回传可以跨池甚至跨域发生；
+- CPU 需要做的已经不是本地 handoff，而是全局化 placement、带宽与优先级决策。
+
+### 图 2：PraaS 的核心不是多一个池，而是多一层控制平面
+
+<img src="../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/nvidia-k8s-disagg-serving-2026.webp" alt="Disaggregated serving on Kubernetes" width="760">
+
+图 2 用来支撑一个更强的结论：一旦从单集群 PD 走向 PraaS，系统真正新增的是跨池协调层，而不是单纯更多 worker。[1][2][3]
+
+### 5. CPU 的职责为什么会随之改变
+
+从单集群 PD 走到 PraaS，CPU 的工作会从“做阶段 handoff”升级成“管理跨池状态生命周期”：
+
+- 选择本地还是远端 prefill；
+- 决定哪些 KV 值得跨池回传；
+- 在带宽紧张时决定优先级；
+- 在多个 decode 池之间根据状态位置重路由。
+
+因此，PraaS 真正提出的问题不是“prefill 是否值得拆”，而是“CPU 是否有能力持续承担 distributed inference control plane”。[1][3]
+
+### 6. 边界：为什么不是所有场景都应该走 PraaS
+
+审慎材料 `S023` 也提醒了边界条件：PD 分离并非普适更优，额外复杂度、双份权重成本和更重的状态移动都可能吞掉收益。[5] 所以本节更准确的判断不是“PraaS 一定更好”，而是：
+
+> 当 agentic workload 让 shared prefix、resume 和跨请求复用价值足够高时，PraaS 开始从理论构想变成工程上值得认真考虑的方案。
+
+### 7. 小结
+
+从单集群 PD 到 Prefill-as-a-Service 的演化，标志着系统优化对象已经从“阶段角色分工”升级成“跨池状态编排”。单集群 PD 解决资源错配，PraaS 解决更高层级的状态位置与阶段位置协同；而吞吐 `+54%`、P90 TTFT `-64%` 和异构基线 `+32%` 的结果，共同说明这不是概念包装，而是 AI CPU 职责边界被继续向外推的明确信号。[1][2][3][4][5]
+
+### 参考文献
+
+[1] Prefill-as-a-Service: KVCache of Next-Generation Models Could Go Cross-Datacenter. 2026-04-16/22.
+
+[2] Deploying disaggregated LLM inference workloads on Kubernetes. 2026-03-23.
+
+[3] Full-Stack Optimizations for Agentic Inference with NVIDIA Dynamo. 2026-04-17.
+
+[4] LMCache disaggregated prefill example. current.
+
+[5] Prefill-Decode Disaggregation: Splitting the Two Stages of Inference. 2026-04-04.
 
 这些特征叠加后，系统会开始自然问出一个新问题：
 

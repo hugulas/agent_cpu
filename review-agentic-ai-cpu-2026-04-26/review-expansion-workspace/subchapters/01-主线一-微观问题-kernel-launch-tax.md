@@ -6,9 +6,9 @@
 
 | 判断 | 直接支撑材料 | 关键数字或图 |
 | --- | --- | --- |
-| launch tax 在小模型、量化模型和动态 serving 中会从背景噪声变成关键路径 | `S005 S038 S039 S040` | `19x` dequeue amplification；`1.7x` throughput；graph capture / dynamic megakernel 图 |
-| CPU slowdown 不是局部噪声，而会沿多 GPU 同步链被放大 | `S005` | `2603.22774_summary.png`、`2603.22774_sync-barrier.png` |
-| 图化与 persistent runtime 的价值，来自减少反复的 host 提交动作，而不是单纯“编译更快” | `S038 S039 S040` | `piecewise CUDA graphs`、`FULL_AND_PIECEWISE`、`dynamic megakernels` |
+| launch tax 在小模型、量化模型和动态 serving 中会从背景噪声变成关键路径 | S005 (CPU slowdown); S038 (vLLM V1); S039 (CUDA Graphs); S040 (Event Tensor) | `19x` dequeue amplification；`1.7x` throughput；graph capture / dynamic megakernel 图 |
+| CPU slowdown 不是局部噪声，而会沿多 GPU 同步链被放大 | S005 (CPU slowdown) | `2603.22774_summary.png`、`2603.22774_sync-barrier.png` |
+| 图化与 persistent runtime 的价值，来自减少反复的 host 提交动作，而不是单纯“编译更快” | S038 (vLLM V1); S039 (CUDA Graphs); S040 (Event Tensor) | `piecewise CUDA graphs`、`FULL_AND_PIECEWISE`、`dynamic megakernels` |
 
 ### 1. 本章核心判断
 

@@ -4,39 +4,78 @@
 
 ### 1. 本章核心判断
 
-一旦系统从单集群 PD 走向更强的跨池控制平面，AI CPU 的设计要求就会明显改变。  
-它不再只是需要“足够的 host 核心”，而是需要成为一个能够稳定承担：
+一旦系统从单集群 PD 走向更强的跨池控制平面，AI CPU 的设计要求就会明显改变。它不再只是需要“足够的 host 核心”，而是需要成为一个能够稳定承担 transfer orchestration、KV movement、cache-aware placement 和 node-role specialization 的控制器。换句话说，Prefill-as-a-Service 真正提出的问题不是“再给 CPU 多几个核”，而是：**CPU 应该被设计成什么样，才能稳定地做 distributed inference control plane。**[1][2][3][4][5][6][7]
 
-- transfer orchestration
-- KV movement
-- cache-aware placement
-- node-role specialization
+### 0. 判断-证据对齐表
 
-的控制器。
-
-换句话说，Prefill-as-a-Service 真正提出的问题不是“再给 CPU 多几个核”，而是：
-
-> CPU 应该被设计成什么样，才能稳定地做 distributed inference control plane。
+| 判断 | 直接支撑材料 | 关键数字或图 |
+| --- | --- | --- |
+| 分布式推理 CPU 的第一类需求是更强的 transfer stack，而不是更强的通用算力 | `S001 S003 S009 S014` | NIXL unified API；KV transfer；跨池 PraaS |
+| 平台 CPU 已在为 orchestration / data movement 角色增配带宽与一致性互连 | `S031 S032 S033` | Vera `1.2TB/s`；Grace / Vera `1.8TB/s` NVLink-C2C；uniform memory access |
+| AI CPU 的关键指标是尾延迟稳定性、并发 completion 能力、内存带宽与状态可见性 | `S001 S003 S008 S009` | KV-aware placement；non-blocking transfer；expert residency / state orchestration |
 
 ### 2. transfer stack：为什么网络与主机栈会直接变成 CPU 规格问题
 
-单机时代，很多 host CPU 选择可以主要看通用算力；  
-到了跨池推理，transfer stack 会变成更直接的设计约束。
-
-CPU 需要承担的事情包括：
-
-- 触发和跟踪 KV transfer
-- 管 completion
-- 管 memory registration / pinning
-- 协调 network、GPU、storage 之间的移动
+单机时代，很多 host CPU 选择可以主要看通用算力；到了跨池推理，transfer stack 会变成更直接的设计约束。CPU 需要承担的事情包括触发和跟踪 KV transfer、处理 completion、管理 memory registration / pinning，以及协调 network、GPU、storage 之间的移动。NIXL 与 Dynamo 相关材料之所以重要，正是因为它们把这些动作统一成显式 API，而不是默认为“GPU 自己会解决”。[2][4]
 
 这会直接推高对下面几个方面的要求：
 
 1. **单核尾延迟稳定性**
-   - completion handling 和调度线程很怕抖动
-
+   - completion handling 和调度线程很怕抖动。
 2. **足够的主机并发能力**
-   - 并不是为了跑大任务，而是为了同时处理很多小控制任务
+   - 不是为了跑大任务，而是为了同时处理很多小控制任务。
+3. **高带宽内存与一致性互连**
+   - 只有这样，CPU 才能把状态目录、回传缓冲和 warm tier 管理做得足够平滑。
+
+### 图 1：分布式推理 CPU 首先要变成 transfer orchestrator
+
+<img src="../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/cpu-gpu-unified-memory.webp" alt="CPU-GPU unified memory and transfer stack" width="760">
+
+图 1 的价值在于强调：一旦状态需要跨池移动，CPU 面对的第一类硬约束就是如何稳定地驱动和观察 transfer，而不是如何多跑一点通用计算。[2][4]
+
+### 3. 平台信号：为什么 Vera / Grace 这类设计值得放进这里
+
+Vera、Rubin 和 Grace 的公开资料给了平台层的强证据。Vera 提供 `88` 个 Olympus 核心和 `1.2TB/s` 内存带宽；Grace / Vera 路线又强调 `1.8TB/s` 的 NVLink-C2C 一致性互连和 uniform memory access。[5][6][7] 这些数字之所以重要，不是因为它们自动等于“更适合 agentic AI”，而是因为它们正好对应了控制平面对 CPU 的三类新要求：
+
+- 更高的 host memory 带宽，用来托住状态目录、回传缓冲和 warm tier；
+- 更强的一致性互连，用来减少 CPU 与 GPU 之间状态可见性的摩擦；
+- 更稳定的多核并发，用来承接大量小而频繁的调度与 completion 任务。
+
+### 图 2：平台 CPU 规格已经在对齐 orchestration / movement 角色
+
+<img src="../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/nvidia-vera-cpu-architecture.png" alt="NVIDIA Vera CPU architecture for AI factories" width="760">
+
+图 2 支撑的是平台层的因果：当 CPU 被明确定位为数据移动与控制节点，带宽、核心组织和互连形态都会围绕这一角色变化。[5][6]
+
+### 4. 为什么这不只是“多给几个核”
+
+如果只把问题理解成“多几个核就够了”，会低估三个现实。
+
+第一，**状态治理比纯算力更看重尾延迟稳定性**。调度线程一旦抖动，KV handoff、resume 和 placement 决策就会在主路径上被放大。[1][2][4]
+
+第二，**控制面负载是小任务高并发，不是大任务低并发**。这要求 CPU 更擅长同时处理许多细粒度 completion、metadata 更新和优先级判断。[2][3][4]
+
+第三，**AI CPU 需要同时服务 KV 与 MoE 两类状态对象**。KV lifecycle 和 expert residency 都在争夺同一组主机资源，因此 CPU 的价值在于做统一状态编排，而不是只跑某一类辅助逻辑。[2][3]
+
+### 5. 小结
+
+本节真正要收束的是一个规格判断：当系统进入跨池、跨集群、跨域的分布式推理阶段，AI CPU 的核心竞争力会从“通用 host 算力”转向“低抖动控制能力 + 高带宽状态承载 + 强一致性移动协同”。PraaS、Dynamo、NIXL、FluxMoE 和 Vera / Grace 平台材料共同说明，这已经不是推断性的未来要求，而是公开系统设计正在对齐的方向。[1][2][3][4][5][6][7]
+
+### 参考文献
+
+[1] Prefill-as-a-Service: KVCache of Next-Generation Models Could Go Cross-Datacenter. 2026-04-16/22.
+
+[2] Full-Stack Optimizations for Agentic Inference with NVIDIA Dynamo. 2026-04-17.
+
+[3] FluxMoE: Decoupling Expert Residency for High-Performance MoE Serving. 2026-04-03.
+
+[4] Enhancing Distributed Inference Performance with the NVIDIA Inference Transfer Library. 2026-03-09.
+
+[5] NVIDIA Vera CPU Delivers High Performance, Bandwidth, and Efficiency for AI Factories. 2026-03-16.
+
+[6] Inside the NVIDIA Rubin Platform: Six New Chips, One AI Supercomputer. 2026-01.
+
+[7] Grace CPU Delivers High Bandwidth and Efficiency for Modern Data Centers. 2025-12-05.
 
 3. **与 NIC / DPU 的拓扑友好性**
    - 否则 CPU 做出的路径决策会在物理数据面上被抵消

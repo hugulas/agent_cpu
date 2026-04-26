@@ -53,5 +53,72 @@ Agentic 场景里，大量请求不是彼此完全独立的。它们往往共享
 
 也正因此，后续的 `Prefill-as-a-Service` 才不是凭空出现的新概念，而是这一负载形状自然推导出的下一步。先有 agentic workload 把 prefill 从隐含阶段推成独立对象，后有系统尝试把 prefill 节点化、服务化、跨池化。没有前者，后者就像过度设计；有了前者，后者反而变成顺理成章的演化。
 
-本子章节要收束出的结论是：  
-**Agentic inference 之所以特别适合拆出 prefill，不是因为它比传统工作负载“上下文更长”这么简单，而是因为它同时具备 prefill-first、shared-prefix-rich 和 remote-prefill-feasible 三个特征，使前缀计算天然更适合被独立部署和控制。**
+### 0. 判断-证据对齐表
+
+| 判断 | 直接支撑材料 | 关键数字或图 |
+| --- | --- | --- |
+| agentic workload 比传统 chat 更容易呈现 prefill-first 形态 | `S001 S028 S029 S030` | `100` sub-agents；`1,500+` tool calls；visual / GUI multi-session 形态 |
+| shared prefix 在多代理与工具链场景中是结构性存在，而不是偶然重复 | `S028 S029 S030` | 公共 role / tool schema / session trunk；`4.5x` sequential wall-clock reduction |
+| remote prefill 之所以在 2025H2+ 变现实，是因为 reduced-KV、prefix reuse 与 KV lifecycle 已经到位 | `S001 S029 S030` | PD/PraaS 架构图；visual-agent burst；跨池恢复逻辑 |
+
+### 1. 本章核心判断
+
+`Prefill/Decode` 分离并不是一个对所有推理负载都同样有吸引力的部署选择。它之所以在近一轮 agentic inference 讨论中迅速升温，不是因为工程界突然偏爱更复杂架构，而是因为 agentic workload 的形状恰好比传统单轮聊天更适合把 prefill 单独拆出来。最关键的不是“上下文更长”，而是 agentic 负载同时具备 `prefill-first`、`shared-prefix-rich` 和 `remote-prefill-feasible` 三个特征。[1][2][3][4]
+
+### 2. 为什么 agentic workload 更容易先被 prefill 打满
+
+在传统 chat 场景中，请求往往是“一次较重 prefill + 一段相对稳定的 decode”。而 agentic workload 更常出现：
+
+- 高频短回合；
+- 多次 resume；
+- 会话分支不断生成；
+- 新上下文、工具 schema 和视觉输入持续注入。
+
+这会让系统更容易先被 prefill 压满，而不是先被 decode 压满。Kimi Agent Swarm / K2.5 的公开形态就是最直接的证据：系统支持最多 `100` 个 sub-agents、`1,500+` tool calls，并给出相对顺序执行最多 `4.5x` 的 wall-clock 改善。[2][3] 这些数字背后的真实含义不是“工具调用很多”，而是**会话启动、共享前缀复用和上下文再进入会变得极其频繁**。
+
+### 图 1：agentic workflow 的真正压力往往来自反复触发的前缀阶段
+
+<img src="../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/cpu-centric-agentic-workflow.png" alt="CPU-centric agentic workflow" width="760">
+
+图 1 用来支撑一个核心转折：agentic 流程不是单次长 decode，而是反复发生阶段切换、状态恢复和前缀重入，因此 prefill 更容易成为第一类独立优化对象。[2][3][4]
+
+### 3. shared prefix 为什么在 agentic 场景里更强
+
+多代理系统往往共享 system prompt、agent role、工具 schema、环境说明、公共知识前缀和部分对话历史。也就是说，不同 subagent 目标虽不同，但启动上下文高度一致。只要共享前缀足够明显，prefill 的重复就不再是可有可无的小浪费，而会变成最值得专门优化的一段成本。
+
+这也是为什么本综述把 prefix reuse 和 PD 分离放在同一主线内：只有当 shared prefix 是结构性存在时，把 prefill 抽成独立阶段、独立池甚至独立服务，才会从“过度设计”变成“顺理成章”。[2][3][4]
+
+### 4. remote prefill 为什么在 2025H2 之后变得现实
+
+过去即使意识到 prefill 和 decode 的资源特征不同，把它们真正拆到不同节点或不同池上仍常受限于 KV 太大、带宽太高、状态传输不可承受。但 `S001` 已经表明，PraaS 讨论的对象不再局限于同构单集群，而是跨数据中心、异构集群和商品以太网。[1] 这意味着工程界已经开始默认：只要前缀足够值钱、共享足够明显、回传路径足够可控，remote prefill 是可以被认真考虑的。
+
+### 图 2：从 tool-call / branch-resume 视角看，prefill 已经像独立服务动作
+
+<img src="../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/agentic-tool-call-offload-prefetch.svg" alt="Agentic tool call prefill and offload workflow" width="760">
+
+图 2 支撑本节的第三个判断：agentic 负载下的 prefill 已经更像被频繁触发、可独立调度的服务动作，而不只是每个请求开头顺便做的一段计算。[1][4]
+
+### 5. 这为什么会直接抬高 CPU 复杂度
+
+只要 prefill 能被单独拆出，CPU 就不再只是在单节点内处理 queue、worker selection 和阶段切换，而要开始回答跨节点、跨池甚至跨域的问题：
+
+- 哪一类请求适合 local prefill，哪一类适合 remote prefill；
+- 哪些 prefix 值得跟随 prefill 节点长期保留；
+- 带宽紧张时应优先回传哪些状态；
+- 本地 decode 与远端 prefill 节奏不同步时，如何避免状态过早或过晚到达。
+
+因此，agentic inference “特别适合拆出 prefill”的真正原因，并不只是上下文长，而是它把前缀计算变成了更独立、更重复、更突发、也更值得控制面显式管理的对象。[1][2][3][4]
+
+### 6. 小结
+
+本节要收束出的结论是：**agentic inference 之所以特别适合拆出 prefill，不是因为它比传统工作负载“上下文更长”这么简单，而是因为它同时具备 prefill-first、shared-prefix-rich 和 remote-prefill-feasible 三个特征，使前缀计算天然更适合被独立部署和控制。** 这一结论已被 `100` sub-agents、`1,500+` tool calls、`4.5x` wall-clock 改善和 PraaS 的跨池化方向共同支撑。[1][2][3][4]
+
+### 参考文献
+
+[1] Prefill-as-a-Service: KVCache of Next-Generation Models Could Go Cross-Datacenter. 2026-04-16/22.
+
+[2] Kimi Introduces Agent Swarm: Let 100 AI Agents Work for You. 2026-04-11.
+
+[3] Kimi K2.5: Visual Agentic Intelligence. 2026.
+
+[4] Anthropic / OpenClaw / Mobile Use Agent materials as multimodal or multi-session shape evidence. 2026/current.

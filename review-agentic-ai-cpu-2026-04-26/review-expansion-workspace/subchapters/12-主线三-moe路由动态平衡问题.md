@@ -4,40 +4,73 @@
 
 ### 1. 本章核心判断
 
-MoE 在服务化推理里的关键 host-side 问题，不只是“冷 expert 怎么搬”，而是 **如何持续处理 expert skew**。  
-一旦 expert 访问分布不均，系统瓶颈就会迅速从单次权重搬运，升级为：
+MoE 在服务化推理里的关键 host-side 问题，不只是“冷 expert 怎么搬”，而是 **如何持续处理 expert skew**。一旦 expert 访问分布不均，系统瓶颈就会迅速从单次权重搬运，升级为 hot/cold expert residency、batch-level balance、topology-aware placement 和 cross-rank synchronization。这说明 MoE routing 已经从局部 gate 选择问题，演化成控制平面问题。[1][2][3]
 
-- hot/cold expert residency
-- batch-level balance
-- topology-aware placement
-- cross-rank synchronization
+### 0. 判断-证据对齐表
 
-这说明 MoE routing 已经从局部 gate 选择问题，演化成控制平面问题。
+| 判断 | 直接支撑材料 | 关键数字或图 |
+| --- | --- | --- |
+| expert skew 比单次 cold miss 更能决定长期吞吐与尾延迟 | `S035 S036 S037` | wide expert parallelism；fine-grained residuals；speculative overlap |
+| 动态平衡是跨 token、跨批次、跨时间窗的问题，因此天然回到 CPU / control plane | `S035 S036` | topology-aware placement；history-guided prefetch |
+| 实际对抗 skew 的方法不是只改 gate，而是改 residency、拓扑和同步窗口 | `S035 S036 S037` | rack-scale placement；expert map；overlap hiding |
 
 ### 2. 为什么 expert skew 是比冷启动更棘手的问题
 
-冷 expert miss 很容易理解：请求命中不在 GPU 上的 expert，于是 CPU 需要搬权重。  
-但真实 serving 中更难的是 skew：
+冷 expert miss 很容易理解：请求命中不在 GPU 上的 expert，于是 CPU 需要搬权重。但真实 serving 中更难的是 skew。
 
 1. **热门 expert 会反复被打爆**
-   - 即使大多数 expert 都能卸载，少数高频 expert 仍可能形成驻留争夺。
-
+   - 即使大多数 expert 都能卸载，少数高频 expert 仍可能形成持续的驻留争夺。
 2. **热门路径会拖垮拓扑**
    - 问题不只是哪张 GPU 上放哪个 expert，而是跨 GPU / 跨节点通信图会随热点路径失衡。
-
 3. **批次内部会被热点拉斜**
    - 同一微批内 token 路由如果过于集中，会让一部分 worker 拥挤、另一部分空闲。
 
-因此，真正难的问题不是“这次 miss 了哪个 expert”，而是：
+因此，真正难的问题不是“这次 miss 了哪个 expert”，而是**路由分布会不会长期把系统推向少数热点路径**。[1][2]
 
-> 路由分布会不会长期把系统推向少数热点路径。
+### 图 1：wide EP 的工业信号是“热点与拓扑”已经高于单次 miss
+
+<img src="../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/deepep-normal-dispatch.png" alt="DeepEP normal dispatch and expert topology" width="760">
+
+图 1 用来支撑一个核心判断：当分发与聚合已经需要显式考虑拓扑和并行组织时，MoE 的主要难题就不再是局部装载，而是长期平衡。[1]
 
 ### 3. 为什么这天然是 CPU / control plane 问题
 
 这类问题之所以会回到 host 侧，有三个原因。
 
-第一，**平衡是跨 token、跨批次、跨时间窗的**。  
-单次 gate 决策可以在模型内部完成，但 hot/cold residency、skew smoothing、历史轨迹复用这类事情，需要跨请求状态和策略记忆，更适合由控制面处理。
+第一，**平衡是跨 token、跨批次、跨时间窗的**。单次 gate 决策可以在模型内部完成，但 hot/cold residency、skew smoothing、历史轨迹复用这类事情，需要跨请求状态和策略记忆，更适合由控制面处理。[2]
+
+第二，**平衡涉及拓扑与放置，而不仅是数学路由**。Wide EP 已经公开承认 MoE 的组织是 rack-scale 问题，意味着“把专家放在哪”与“让哪些 token 去找谁”要被一起考虑。[1]
+
+第三，**平衡的目标本身是多目标的**。系统既要看平均吞吐，也要看尾延迟、链路拥塞和同步窗口。这样的折中天然更像调度问题，而不是纯模型问题。[1][2][3]
+
+### 4. 动态平衡到底在平衡什么
+
+从系统实现上看，MoE 动态平衡至少同时在处理四件事：
+
+- 热专家是否应常驻更近层级；
+- 当前微批是否被少数热点拉斜；
+- 跨 rank 路由是否会拖慢后续聚合；
+- 为了平衡而重排 placement，是否会引入新的迁移代价。
+
+也正因如此，`FineMoE` 才会强调 fine-grained residuals 与历史轨迹，而 `SpecMoEOff` 会强调 overlap hiding。它们都在解决 skew，但切入点不同：一个试图提前感知热点结构，一个试图让热点代价不完整暴露在关键路径上。[2][3]
+
+### 图 2：动态平衡的目标不是“绝对均匀”，而是减少热点路径的系统放大
+
+<img src="../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/nvidia-wide-ep-moe-2025.webp" alt="Wide expert parallelism and topology-aware placement" width="760">
+
+图 2 的重点不是展示某个固定拓扑，而是说明：一旦组织尺度升到 NVL72 / rack-scale，路由平衡就已经不可能只靠模型内部局部逻辑解决。[1]
+
+### 5. 小结
+
+MoE 路由的真正控制面问题，是如何持续消化 expert skew，而不是只处理偶发 cold miss。Wide EP、FineMoE 和 SpecMoEOff 共同说明：**只要热点、拓扑和同步链一起作用，动态平衡就天然需要 CPU 维护跨时间窗的状态与策略记忆。**[1][2][3]
+
+### 参考文献
+
+[1] Scaling Large MoE Models with Wide Expert Parallelism on NVL72 Rack-Scale Systems. 2025-12-18.
+
+[2] FineMoE: Modeling Fine-Grained MoE Residuals for Expert Prefetching in Serving. 2026.
+
+[3] SpecMoEOff: Accelerating Mixture-of-Experts Inference via Speculative Expert Offloading. 2025-08-29.
 
 第二，**平衡要同时看逻辑路由和物理放置**。  
 同一个逻辑 expert，放在不同 GPU、不同节点、不同内存层，代价完全不同。  

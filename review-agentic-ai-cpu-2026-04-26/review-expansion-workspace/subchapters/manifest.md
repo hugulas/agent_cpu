@@ -8,6 +8,20 @@
   - `09-8-主线四-pd-分离与跨池控制平面.md`
 - Subchapters: `16`
 
+## 材料索引
+
+以下 S 编号为子章节正文中引用的核心材料索引，完整版本与原始 URL 参见项目根目录 `cited-materials/sources-index.md`。
+
+| S 编号 | 材料名称 | 类型 | 日期 |
+| --- | --- | --- | --- |
+| S005 | Characterizing CPU-Induced Slowdowns in Multi-GPU LLM Inference (arXiv 2603.22774) | 学术论文 | 2026-03 |
+| S021 | BentoML: Prefill-Decode Disaggregation | 技术文档 | 2026/current |
+| S024 | DigitalOcean: Hidden Bottlenecks in LLM Inference and How to Fix Them | 技术博客 | 2026-04 |
+| S025 | DigitalOcean: The LLM Inference Trilemma | 技术博客 | 2026-04 |
+| S038 | vLLM V1: A Major Upgrade with 1.7x Speedup | 官方博客 | 2025-01 |
+| S039 | vLLM CUDA Graphs Design Document | 官方文档 | current |
+| S040 | Event Tensor: Dynamic Megakernels for LLM Serving (arXiv 2604.13327) | 学术论文 | 2026-04 |
+
 | Order | File | Parent | Focus |
 | --- | --- | --- | --- |
 | 1 | `01-主线一-微观问题-kernel-launch-tax.md` | 主线一 | kernel launch tax 与 CPU slowdown |

@@ -2,42 +2,72 @@
 
 父章节：`6. 主线二：KV 不再只是容量对象，而是生命周期对象`
 
-本子章节聚焦：
+### 0. 判断-证据对齐表
 
-- 为什么 APC 是状态复用控制平面的起点
-- 它解决了什么，又没有解决什么
+| 判断 | 直接支撑材料 | 关键数字或图 |
+| --- | --- | --- |
+| APC 应被理解为第一代状态复用控制平面，而不是局部小优化 | `S010 S043` | full-block prefix caching；TTFT 最多 `5x` |
+| APC 的第一批系统收益来自避免重复 prefill，而不是“平均省一点算力” | `S043` | block size `64 -> 8` tokens 最多再增 `7%` |
+| APC 的边界在于它主要处理 exact shared prefix，本身不解决分布式路由和长期保留 | `S010 S043` | KV cache manager / LRU eviction；early reuse 仍需更细粒度机制 |
 
-当前提纲要点：
+### 1. 本章核心判断
 
-- APC 的意义与边界
+`Automatic Prefix Caching` 的历史地位需要被重新定义。它不应被理解成一个局部的小优化，而应被理解成第一代**状态复用控制平面**技术。原因很直接：它第一次把“跨请求共享已有 KV”从经验性技巧变成了 runtime 内建能力。vLLM 的 APC 设计文档已经把 prefix cache manager、full-block matching 和 eviction 机制作为系统组成部分，而 TensorRT-LLM 的 early reuse 结果则表明，这种系统化状态复用可以把 TTFT 压低到最多 `5x`，并且把 block size 从 `64` tokens 缩到 `8` tokens 还能再带来最多 `7%` 的改善。[1][2]
 
-在服务化推理里，`Automatic Prefix Caching` 的历史地位需要被重新定义。它不应被理解成一个局部的小优化，而应被理解成第一代“状态复用控制平面”技术。原因很直接：它第一次把“跨请求共享已有 KV”从经验性技巧变成了 runtime 内建能力。此前的系统当然也会利用共享 system prompt、模板化上下文或重复请求模式，但这些能力大多停留在上层应用或静态工程实践中。到了 APC 这一代，服务系统开始把“前缀是否已经算过、是否值得保留、能否被下一次请求直接命中”作为显式运行时问题来处理。
+### 2. 为什么 APC 是状态复用控制平面的起点
 
-这一变化的意义在 agentic inference 里尤其大。传统 chat-style workload 往往更容易被描述成“一次长上下文 prefill + 一段相对平滑的 decode”，而 agentic workload 则更常出现共享 system prompt、固定工具描述、重复角色说明、子代理公共前缀、以及多轮 branch-and-resume 结构。换句话说，`shared prefix` 在 agentic 场景中不是偶然存在，而是结构性存在。只要系统能够识别这些共享部分并避免重复 prefill，CPU 和 GPU 就都能少做一段最昂贵、最突发、最容易挤压调度链的工作。
+APC 真正完成了三件此前并不显式的事：
 
-因此，APC 的首要价值不是“平均省下一点算力”，而是把状态复用正式引入了服务系统的关键路径。它回答的第一个问题是：**已经生成过的状态，能不能被后来的请求当成一等公民继续使用？** 这是一个比“KV 能不能被卸载到别处”更早、也更基础的问题。因为只有当系统承认 KV 不只是一次性中间结果，而是可保留、可再利用、可路由的状态对象时，后面的 retention、affinity routing、event-driven reuse、warm tier 才有成立的土壤。
+1. 它把“前缀是否相同”的判断从应用层移到推理系统层。
+2. 它把“命中缓存”的收益直接转化成 TTFT、prefill token 数和 GPU 时间的减少。
+3. 它强迫系统维护一套最基本的状态身份机制，即某段 KV 对应哪段输入、在哪个 block 边界上可复用、何时仍然有效。
 
-从机制上看，第一代 APC 的思路相对朴素：对前缀进行块级划分，通过哈希或等价识别方式判断新请求的前缀是否和某段既有状态一致；如果一致，就直接复用相应的 KV block，而不是从 token 0 开始重新做整段 prefill。这种机制看似简单，但它实际上完成了三件之前并不显式的事。
+因此，APC 的意义远不止“命中了就省 token”。它意味着服务系统开始默认：**状态复用本身值得被系统化对待。**[1][2]
 
-第一，它把“前缀是否相同”的判断从应用层移到了推理系统层。  
-第二，它把“命中缓存”的收益直接转化成 TTFT、prefill token 数和 GPU 时间的减少。  
-第三，它强迫系统维护一套最基本的状态身份机制，即某段 KV 到底对应哪段输入、在哪个 block 边界上可复用、何时仍然有效。
+### 图 1：第一代 prefix reuse 的价值首先体现为 TTFT 下降
 
-正因为这三件事同时发生，APC 才应被视作第一代状态复用技术，而不是单纯的哈希缓存。它的工程含义远大于“命中了就省 token”。它意味着服务系统开始默认：`state reuse` 本身值得被系统化对待。
+<img src="../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/nvidia-dynamo-agentic-kv-readwrite-2026.webp" alt="Agentic KV reuse and routing" width="760">
 
-不过，APC 之所以只能算第一代，也恰恰因为它解决的问题仍然有限。它最适合的场景是 `exact` 或 `near-exact shared prefix`。只要公共前缀足够稳定，例如统一的 system prompt、固定模板、重复工具 schema、公共角色说明或高度重复的 agent setup，APC 就能产生很强的收益。但一旦共享部分变得更碎片化、更分叉、更依赖动态上下文，第一代 APC 的边界就暴露出来了。
+图 1 不是 APC 的实现图，而是用来解释为什么 prefix reuse 会迅速变成控制面问题：agentic workload 下共享前缀和高读写比叠加，使“避免重复 prefill”直接决定 TTFT 与调度压力。[2][3]
 
-这种边界至少体现在四个方面。
+### 3. APC 解决了什么
 
-第一，APC 主要回答“同样的前缀能不能重用”，并没有回答“不同但相似的状态能不能部分重用”。  
-第二，它默认命中收益发生在本地已有缓存附近，而没有真正处理分布式 worker 之间的状态可见性。  
-第三，它往往把问题表述为“有没有命中”，而不是“命中是否稳定、是否值得为此牺牲负载均衡”。  
-第四，它对多模态 identity、branching execution 和频繁 resume 的表达能力有限。
+第一代 APC 最擅长处理的是 `exact` 或 `near-exact shared prefix`。对于固定 system prompt、工具 schema、共享角色说明、标准模板和子代理公共启动上下文，这类机制可以直接避免重复 prefill。对 agentic inference 来说，这一步尤其关键，因为 shared prefix 不是偶然存在，而是结构性存在。
 
-这也是为什么 APC 一旦落入真实服务，就会迅速演变成更广的系统问题。单机或单 worker 视角下，APC 似乎只是一个查表命中机制；但放到多 worker、多 executor、多会话并发的环境里，系统很快就会追问：
+`S043` 的 early reuse 结果表明，这种收益已经不是理论推断，而是可以显著改写首 token 延迟的现实优化。[2] 因此，APC 的首要价值不是“平均省下一点算力”，而是把状态复用正式引入了服务系统的关键路径。
 
-- 新请求应该被路由到哪台更可能命中的 worker？
-- 某段前缀状态应保留多久，何时应被回收？
+### 4. APC 没有解决什么
+
+之所以说 APC 只是第一代，是因为它解决的问题仍然有限：
+
+- 它主要回答“同样的前缀能不能重用”，没有回答“不同但相似的状态能不能部分重用”；
+- 它更像单机或单 worker 内部的 reuse primitive，没有真正处理分布式 worker 之间的状态可见性；
+- 它把问题更多表述为“有没有命中”，而不是“命中是否稳定、是否值得为此牺牲负载均衡”；
+- 它对多模态 identity、branching execution 和长期 pinned prefix 的表达能力有限。[1][2]
+
+也正因此，第一代 APC 一落入真实服务环境，很快就会催生后续问题：请求该被路由到哪台更可能命中的 worker，哪些 prefix 值得长期保留，以及命中与均衡冲突时应该优先谁。
+
+### 图 2：APC 的边界来自 block 粒度和 exact prefix 假设
+
+<img src="../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/agentic-kv-read-write-ratio.webp" alt="KV read-write reuse pressure" width="760">
+
+图 2 强调 APC 为什么会迅速触及边界：当复用压力来自大量分叉、resume 和跨 worker 请求时，仅有“本地 exact prefix 命中”已经不够支撑整个系统。[2][3]
+
+### 5. 为什么说它是“第一代”而不是“完整方案”
+
+把 APC 定位成第一代，有两个好处。第一，它承认这项技术已经完成了状态复用的基础抽象：状态可被识别、保留、再利用。第二，它也清楚承认这一步仍然过于朴素，后面还必须引入 routing、retention、events 和更强的 identity 机制。换句话说，APC 为后续控制面铺了路，但它本身并不是终点。
+
+### 6. 小结
+
+本节想建立的是一个历史定位：APC 之所以重要，不是因为它本身足够复杂，而是因为它第一次把 `state reuse` 明确建成了 runtime 能力。vLLM 的 prefix cache manager 与 TensorRT-LLM 的 `5x` TTFT 改善共同说明，第一代 prefix reuse 已经足以改变服务系统的成本中心；同时，它的 block 粒度、exact prefix 假设和分布式可见性边界，也决定了后续必须出现更强的路由、保留和事件化机制。[1][2]
+
+### 参考文献
+
+[1] vLLM Automatic Prefix Caching. current.
+
+[2] 5x Faster Time to First Token with NVIDIA TensorRT-LLM KV Cache Early Reuse. 2024-11-08.
+
+[3] Full-Stack Optimizations for Agentic Inference with NVIDIA Dynamo. 2026-04-17.
 - 如果 worker 之间负载已经失衡，是否还该坚持 cache affinity？
 - 在图像、工具描述、会话分支不同但文本前缀相近时，缓存身份应如何定义？
 

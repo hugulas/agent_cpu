@@ -2,118 +2,92 @@
 
 父章节：`6. 主线二：KV 不再只是容量对象，而是生命周期对象`
 
+### 0. 判断-证据对齐表
+
+| 判断 | 直接支撑材料 | 关键数字或图 |
+| --- | --- | --- |
+| agentic workload 已把 KV 从“容量补丁”变成“状态生命周期对象” | `S003 S006 S007 S034` | `11.7x` read/write ratio；NOSA memory hierarchy；ScoutAttention layer-ahead 路径 |
+| KV 的主价值已从一次写入转向长期保留、恢复和复用 | `S003 S034` | priority-based eviction；token-range retention；event API |
+| CPU 的职责因此从搬运者升级为 retention / prefetch / resume 规划器 | `S006 S007` | NOSA 最高 `2.3x` decode throughput；ScoutAttention 约 `2.1x` speedup |
+
 ### 1. 本章核心判断
 
-在 agentic inference 中，KV 已经不应被理解成“显存放不下时可以挪出去的一堆缓存”，而应被理解成：
-
-> 一个需要被长期保留、反复恢复、按价值调度的状态对象。
-
-这就是从 `KV offload problem` 到 `KV lifecycle problem` 的转变。
+在 agentic inference 中，KV 已经不应被理解成“显存放不下时可以挪出去的一堆缓存”，而应被理解成一个**需要被长期保留、反复恢复、按价值调度的状态对象**。这不是措辞升级，而是问题定义本身已经变了：NVIDIA Dynamo 给出的 agentic 数据表明，KV 访问的读写比可以达到 `11.7x`，也就是同一段状态被读回和复用的频率远高于第一次写入。[1] 一旦读远多于写，系统优化目标就不会再停留在“能不能塞下”，而会转向“能不能在正确时间、正确层级、以正确代价把它拿回来”。
 
 ### 2. 为什么“容量问题”这个旧定义已经不够
 
-早期 KV offload 的出发点很简单：
+早期 KV offload 的出发点很简单：上下文更长、批次更大、HBM 不够，于是把问题表述成“如何把 KV 搬到 CPU memory 或 storage”。但 `S006` 和 `S007` 这类材料共同说明，真实瓶颈并不只是容量，而是**locality engineering 与 transfer domination**。NOSA 把 sparse attention 从一开始就设计成 offload-friendly，目标不是只减少 attention FLOPs，而是减少必须跨层级搬运的 selected KV；ScoutAttention 更进一步，让 CPU 在 layer-ahead 阶段参与预计算，证明 CPU 可以从被动搬运者前移成恢复路径的一部分。[2][3]
 
-- 上下文更长
-- 批次更大
-- HBM 不够
+换句话说，旧定义只回答“KV 放哪儿”；新定义必须同时回答：
 
-于是问题被定义成“如何把 KV 搬到 CPU memory / storage”。  
-但 agentic workload 出现后，这个定义明显不够，原因有三点：
+- 哪些 KV 值得保留更久；
+- 哪些 KV 值得提前回填；
+- 哪些 KV 恢复太贵，不值得进入关键路径；
+- 哪些 KV 的位置本身就该参与路由决策。
 
-1. **KV 的复用价值升高**
-   - 很多状态不是写一次就丢，而是会在后续几十次请求中被再次利用。
+### 图 1：agentic 负载把 KV 的读路径推成主路径
 
-2. **KV 的恢复成本进入关键路径**
-   - pause-resume、fan-out/fan-in、session trunk 让“何时能把它拿回来”变得和“能否存下”同样重要。
+<img src="../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/agentic-kv-read-write-ratio.webp" alt="Agentic KV read-write ratio" width="760">
 
-3. **KV 的位置开始影响调度**
-   - 状态在哪儿，会影响请求该路由到哪里、该保留多久、是否值得远程化。
-
-因此，单纯把 KV 看成容量对象，会系统性低估 CPU 的新职责。
+图 1 的意义在于把“KV lifecycle”从概念落到访问形状上：当读写比达到 `11.7x` 量级时，系统成本中心自然会从初次写入转向保留、恢复和复用。[1]
 
 ### 3. `write-once-read-many` 为什么会改写整个问题定义
 
-这是转变的核心。  
-agentic inference 不再主要是“不断写入新的 KV”，而是越来越像：
+agentic workload 下的大量状态都带有明显的 `write-once-read-many` 特征。system prompt、tool schema、session trunk、分支上下文和多代理共享前缀往往只在第一次 prefill 时完整写入，但在后续几十次请求里会被多次恢复。`S034` 已经把这类现象工程化为 priority-based KV eviction、token-range retention 与 KV event API，说明工业界不再把 KV 当作“一次性中间结果”，而是把它视为需要显式治理的生命周期对象。[4]
 
-- 先写一遍
-- 后续多次读回
-- 在多个阶段、多个 agent、多个 worker 间复用
+这也是为什么 lifecycle 比 offload 更准确。因为生命周期视角覆盖的是整条链路：
 
-这意味着 KV 的价值重心从 `write path` 转向 `read / retain / recover path`。
-
-而一旦价值重心转移，CPU 的问题定义也跟着变：
-
-- 以前：把放不下的 KV 安排到别处
-- 现在：让高价值 KV 在正确时间、正确位置、以正确代价可被重新利用
+1. 创建：首次 prefill 或 decode 生成状态。
+2. 保留：决定哪些高价值块应继续驻留。
+3. 迁移：在 HBM、CPU memory、远端缓存间移动。
+4. 预取：在 resume 前提前回填。
+5. 恢复：把状态重新送回关键路径。
+6. 复用：让后续请求直接命中而不是重算。
+7. 回收：在价值下降后及时释放。
 
 ### 4. retention、prefetch、resume 为什么会变成中心动作
 
-#### 4.1 retention
+这三件事之所以升格，是因为它们分别对应了 lifecycle 的三个关键成本点。
 
-如果一个状态后续还会被多次使用，那么“留不留下来”本身就是决策问题。  
-这会引入：
+#### 4.1 retention 决定高价值状态能否跨轮次保留
 
-- 哪些状态高价值
-- 哪些状态只是短期热
-- 哪些状态该下沉到 warm tier
+如果一个 prefix 或 session trunk 后续仍会被访问，过早回收就会把未来收益直接抹掉。`S034` 对 pinned / priority / token-range retention 的强调，说明工业现实已经不是“统一 LRU 是否够用”，而是“高价值块是否该按业务价值被区别对待”。[4]
 
-#### 4.2 prefetch
+#### 4.2 prefetch 决定恢复能否隐藏在关键路径之外
 
-如果恢复路径太慢，即使状态存在，收益也会被吞掉。  
-因此系统必须提前猜测：
+ScoutAttention 的核心启发不是单纯把 KV 搬回，而是让 CPU 通过 layer-ahead 预计算提前为后续层准备访问路径，并实现约 `2.1x` 的 speedup，且精度损失控制在 `<2.4%`。[3] 这说明预取并不是锦上添花，而是恢复路径能否变短的主要来源。
 
-- 哪些状态即将被需要
-- 何时开始回填最合适
+#### 4.3 resume 决定 agentic workflow 的尾延迟
 
-这会让 CPU 从被动搬运者变成主动的恢复路径组织者。
+一旦工作负载存在 branch、pause-resume 和多代理 fan-out/fan-in，resume 就会从异常处理动作变成主路径动作。NOSA 的结论是：selected KV transfer 仍可能主导成本，因此仅仅“状态在别处存在”并不能保证收益兑现；必须控制恢复路径的 locality 与搬运粒度，系统吞吐才会真正改善，论文给出的最高收益是 `2.3x` decode throughput。[2]
 
-#### 4.3 resume
+### 图 2：KV 生命周期已经天然跨越多层级内存
 
-resume 是 agentic workload 最容易被低估的动作之一。  
-在传统 chat 中，状态恢复没那么频繁；  
-在 agentic inference 中，resume 可能就是主路径之一。
+<img src="../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/agentic-kv-memory-hierarchy.svg" alt="KV memory hierarchy" width="760">
 
-所以 resume latency 不再只是异常处理指标，而是核心性能指标。
+图 2 强调 lifecycle 的工程本质不是单次 offload，而是状态在 HBM、CPU memory、远端层级之间持续流动。CPU 的职责因此更像层级状态管理，而不是一次性 DMA 触发器。[2][3]
 
 ### 5. 为什么这会把 CPU 推到新位置
 
-一旦 retention、prefetch、resume 都变成主路径动作，CPU 的职责就会自然扩展成：
+一旦 retention、prefetch、resume 都进入主路径，CPU 的职责就会自然扩展成：
 
-- state keeper
-- recovery planner
-- warm-tier manager
-- prefetch trigger
+- `state keeper`：维护哪些状态仍然值得留下；
+- `recovery planner`：判断何时回填、从哪里回填；
+- `warm-tier manager`：安排哪些状态留在近端 DRAM 或远端 warm tier；
+- `prefetch trigger`：根据访问迹象提前组织恢复。
 
-这和传统意义上的“host CPU 发几个 kernel”已经不是同一个角色。
+这和传统意义上的“host CPU 发几个 kernel”已经不是同一个角色。`S003`、`S006`、`S007`、`S034` 一起给出的稳定结论是：**KV 的主要难点已从容量管理转向生命周期治理，而生命周期治理天然是 control-plane 问题。**[1][2][3][4]
 
-### 6. 为什么说 lifecycle 才是更准确的工业问题定义
+### 6. 小结
 
-生命周期这个词很重要，因为它强迫我们把 KV 看成一条完整链路：
+本节要建立的不是一个新名词，而是一条更准确的因果链：当 agentic workload 让 KV 呈现 `write-once-read-many`、高频 resume 和跨阶段复用特征时，KV 就会从“容量补丁”变成“生命周期对象”。读写比 `11.7x`、NOSA 的 `2.3x` 吞吐提升、ScoutAttention 的 `2.1x` 预取收益，以及 TensorRT-LLM 的 retention / event API 共同说明，CPU 的新职责不是把 KV 存下，而是把它留住、找回、复用并以更低代价重新送回关键路径。[1][2][3][4]
 
-1. 创建
-2. 保留
-3. 迁移
-4. 预取
-5. 恢复
-6. 复用
-7. 回收
+### 参考文献
 
-只有按这条链看，很多工业材料中的现象才会连起来，比如：
+[1] Full-Stack Optimizations for Agentic Inference with NVIDIA Dynamo. 2026-04-17.
 
-- KV-aware routing
-- event API
-- selective retention
-- warm tier
-- resume latency
+[2] NOSA: Native and Offloadable Sparse Attention. 2025-10-15.
 
-这些都不是单纯的 offload 技术，而是 lifecycle governance 的组成部分。
+[3] ScoutAttention: Efficient KV Cache Offloading via Layer-Ahead CPU Pre-computation. 2026-03-28.
 
-### 7. 小结
-
-本节最重要的结论是：
-
-> KV 在 agentic inference 中已经从“容量补丁”变成“状态生命周期对象”。CPU 的新职责，不是把它存下，而是把它留住、找回、复用并以更低代价重新送回关键路径。
-
-这也是后续 prefix cache、sparse access 和工业控制平面化趋势能够成立的前提。
+[4] Introducing New KV Cache Reuse Optimizations in NVIDIA TensorRT-LLM. 2025.
