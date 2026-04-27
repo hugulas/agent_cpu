@@ -1,4 +1,4 @@
-# S021 笔记：Prefill-decode disaggregation
+# S021 笔记：BentoML Handbook — Prefill-decode disaggregation
 
 ## 基本信息
 
@@ -6,6 +6,7 @@
 - `direction_id`：`D10`
 - 日期：`2026/current`
 - 类型：`handbook`
+- 来源：`BentoML`（现为 Modular 旗下）
 - 本地材料：`cited-materials/s021-prefill-decode-disaggregation.pdf`
 - 提图状态：`completed`
 - 可用图片数：`2`
