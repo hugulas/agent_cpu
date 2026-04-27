@@ -96,7 +96,7 @@ Vera、Rubin 和 Grace 的公开资料给了平台层的强证据。Vera 提供 
 
 [3] [FluxMoE: Decoupling Expert Residency for High-Performance MoE Serving](../material/reference-notes/s008-fluxmoe-decoupling-expert-residency-for-high-performance-moe-serving.md). 2026-04-03.
 
-[4] NVIDIA Dynamo: Introducing NIXL (Inference Transfer Library). 2026-03.
+[4] [NVIDIA Dynamo: Introducing NIXL (Inference Transfer Library)](../material/reference-notes/s014-nvidia-dynamo-blog-nixl-section.md). 2026-03.
 
 [5] [NVIDIA Vera CPU Delivers High Performance, Bandwidth, and Efficiency for AI Factories](../material/reference-notes/s031-nvidia-vera-cpu-delivers-high-performance-bandwidth-and-efficiency-for-ai-factor.md). 2026-03-16.
 
