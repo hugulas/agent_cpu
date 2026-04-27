@@ -90,12 +90,12 @@ agentic workload 会同时强化 prefill-first、shared prefix、高频 resume�
 
 ### 参考文献
 
-[1] Prefill-as-a-Service: KVCache of Next-Generation Models Could Go Cross-Datacenter. 2026-04.
+[1] [Prefill-as-a-Service: KVCache of Next-Generation Models Could Go Cross-Datacenter](../material/reference-notes/s001-prefill-as-a-service-kvcache-of-next-generation-models-could-go-cross-datacenter.md). 2026-04.
 
-[2] Deploying disaggregated LLM inference workloads on Kubernetes. 2026-03-23.
+[2] [Deploying disaggregated LLM inference workloads on Kubernetes](../material/reference-notes/s002-deploying-disaggregated-llm-inference-workloads-on-kubernetes.md). 2026-03-23.
 
-[3] Full-Stack Optimizations for Agentic Inference with NVIDIA Dynamo. 2026-04-17.
+[3] [Full-Stack Optimizations for Agentic Inference with NVIDIA Dynamo](../material/reference-notes/s003-full-stack-optimizations-for-agentic-inference-with-nvidia-dynamo.md). 2026-04-17.
 
-[4] LMCache disaggregated prefill example. current.
+[4] [LMCache disaggregated prefill example](../material/reference-notes/s015-lmcache-disaggregated-prefill-example.md). current.
 
-[5] Prefill-Decode Disaggregation: Splitting the Two Stages of Inference. 2026-04-04.
+[5] [Prefill-Decode Disaggregation: Splitting the Two Stages of Inference](../material/reference-notes/s023-prefill-decode-disaggregation-splitting-the-two-stages-of-inference.md). 2026-04-04.

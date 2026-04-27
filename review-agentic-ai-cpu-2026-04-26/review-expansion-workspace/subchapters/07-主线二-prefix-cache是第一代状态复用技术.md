@@ -64,8 +64,8 @@ APC 真正完成了三件此前并不显式的事：
 
 ### 参考文献
 
-[1] vLLM Automatic Prefix Caching. current.
+[1] [vLLM Automatic Prefix Caching](../material/reference-notes/s010-vllm-automatic-prefix-caching.md). current.
 
-[2] 5x Faster Time to First Token with NVIDIA TensorRT-LLM KV Cache Early Reuse. 2024-11-08.
+[2] [5x Faster Time to First Token with NVIDIA TensorRT-LLM KV Cache Early Reuse](../material/reference-notes/s043-5x-faster-time-to-first-token-with-nvidia-tensorrt-llm-kv-cache-early-reuse.md). 2024-11-08.
 
-[3] Full-Stack Optimizations for Agentic Inference with NVIDIA Dynamo. 2026-04-17.
+[3] [Full-Stack Optimizations for Agentic Inference with NVIDIA Dynamo](../material/reference-notes/s003-full-stack-optimizations-for-agentic-inference-with-nvidia-dynamo.md). 2026-04-17.

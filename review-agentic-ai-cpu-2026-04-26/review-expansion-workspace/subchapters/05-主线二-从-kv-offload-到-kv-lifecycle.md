@@ -84,10 +84,10 @@ ScoutAttention 的核心启发不是单纯把 KV 搬回，而是让 CPU 通过 l
 
 ### 参考文献
 
-[1] Full-Stack Optimizations for Agentic Inference with NVIDIA Dynamo. 2026-04-17.
+[1] [Full-Stack Optimizations for Agentic Inference with NVIDIA Dynamo](../material/reference-notes/s003-full-stack-optimizations-for-agentic-inference-with-nvidia-dynamo.md). 2026-04-17.
 
-[2] NOSA: Native and Offloadable Sparse Attention. 2025-10-15.
+[2] [NOSA: Native and Offloadable Sparse Attention](../material/reference-notes/s006-nosa-native-and-offloadable-sparse-attention.md). 2025-10-15.
 
-[3] ScoutAttention: Efficient KV Cache Offloading via Layer-Ahead CPU Pre-computation. 2026-03-28.
+[3] [ScoutAttention: Efficient KV Cache Offloading via Layer-Ahead CPU Pre-computation](../material/reference-notes/s007-scoutattention-efficient-kv-cache-offloading-via-layer-ahead-cpu-pre-computation.md). 2026-03-28.
 
-[4] Introducing New KV Cache Reuse Optimizations in NVIDIA TensorRT-LLM. 2025.
+[4] [Introducing New KV Cache Reuse Optimizations in NVIDIA TensorRT-LLM](../material/reference-notes/s034-introducing-new-kv-cache-reuse-optimizations-in-nvidia-tensorrt-llm.md). 2025.
