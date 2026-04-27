@@ -38,7 +38,7 @@
 | 子章节 | 主要补强点 | 主要材料 | 目标图片 |
 | --- | --- | --- | --- |
 | `01` | launch tax、CPU slowdown、runtime graph 化 | `S005 S038 S039 S040` | `s005/summary`、`S039/page_0008-08` 或 `s040/fig1_scheduling_models` |
-| `02` | queue -> worker selection -> handoff -> sync 放大链 | `S005 S003 S021 S024` | `s005/sync-barrier`、`S021` 相关图 |
+| `02` | queue -> worker selection -> handoff -> sync 放大链 | `S005 S021` | `s005/sync-barrier`、`S021` 相关图 |
 | `03` | graph capture、piecewise graphs、persistent runtime | `S038 S039 S040` | `S039/page_0006-06`、`s040/fig10_e2e_compilation_flow` |
 | `04` | 图化编译收益与代价并存 | `S039 S040 S024 S025` | `S039/page_0009-09`、`s040/fig8_dynamic_schedule_runtime_impl` |
 | `05` | KV 从 offload 到 lifecycle | `S003 S006 S007 S034` | `s006`、`s007` 代表图 |
@@ -59,4 +59,3 @@
 - 先保留原判断，再为每个判断补“为什么”和“证据来自哪里”。
 - 能量化的地方优先量化，比如 `19x`、`1.7x`、`11.7x`、`2.1x`、`3.0x`、`+54%`。
 - 相同材料尽量在相邻两三个子章节复用，但支撑点必须不同，避免机械重复。
-
