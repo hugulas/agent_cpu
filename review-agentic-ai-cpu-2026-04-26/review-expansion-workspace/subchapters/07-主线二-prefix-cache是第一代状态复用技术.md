@@ -26,7 +26,7 @@ APC 真正完成了三件此前并不显式的事：
 
 ### 图 1：第一代 prefix reuse 的价值首先体现为 TTFT 下降
 
-![Agentic KV reuse and routing](../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/nvidia-dynamo-agentic-kv-readwrite-2026.webp)
+![Agentic KV reuse and routing](../assets/subchapters/07/nvidia-dynamo-agentic-kv-readwrite-2026.webp)
 
 图 1 不是 APC 的实现图，而是用来解释为什么 prefix reuse 会迅速变成控制面问题：agentic workload 下共享前缀和高读写比叠加，使“避免重复 prefill”直接决定 TTFT 与调度压力。[2][3]
 图 1 不是 APC 的实现图，而是用来解释 APC 为什么会迅速升级成控制面问题：agentic workload 下共享前缀和高读写比叠加，使“避免重复 prefill”直接决定 TTFT 与调度压力。[2][3]
@@ -50,7 +50,7 @@ APC 真正完成了三件此前并不显式的事：
 
 ### 图 2：APC 的边界来自 block 粒度和 exact prefix 假设
 
-![KV read-write reuse pressure](../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/agentic-kv-read-write-ratio.webp)
+![KV read-write reuse pressure](../assets/subchapters/07/agentic-kv-read-write-ratio.webp)
 
 图 2 强调 APC 为什么会迅速触及边界：当复用压力来自大量分叉、resume 和跨 worker 请求时，仅有“本地 exact prefix 命中”已经不够支撑整个系统。[2][3]
 

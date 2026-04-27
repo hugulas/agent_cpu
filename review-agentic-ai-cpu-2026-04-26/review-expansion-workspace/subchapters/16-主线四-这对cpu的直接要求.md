@@ -26,7 +26,7 @@
 
 ### 图 1：分布式推理 CPU 首先要变成 transfer orchestrator
 
-![CPU-GPU unified memory and transfer stack](../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/cpu-gpu-unified-memory.webp)
+![CPU-GPU unified memory and transfer stack](../assets/subchapters/16/cpu-gpu-unified-memory.webp)
 
 图 1 的价值在于强调：一旦状态需要跨池移动，CPU 面对的第一类硬约束就是如何稳定地驱动和观察 transfer，而不是如何多跑一点通用计算。[4][8]
 
@@ -69,7 +69,7 @@ Vera、Rubin 和 Grace 的公开资料给了平台层的强证据。Vera 提供 
 
 ### 图 2：平台 CPU 规格已经在对齐 orchestration / movement 角色
 
-![NVIDIA Vera CPU architecture for AI factories](../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/nvidia-vera-cpu-architecture.png)
+![NVIDIA Vera CPU architecture for AI factories](../assets/subchapters/16/nvidia-vera-cpu-architecture.png)
 
 图 2 在 `13` 中强调的是“平台已把 CPU 当作 orchestration 引擎增强”；在本节中强调的则是更直接的规格映射：当 CPU 被明确定位为数据移动与控制节点，带宽、核心组织和互连形态都会围绕这一角色变化。[5][6]
 

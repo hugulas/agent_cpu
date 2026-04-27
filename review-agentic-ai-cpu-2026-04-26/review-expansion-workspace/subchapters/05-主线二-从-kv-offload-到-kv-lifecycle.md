@@ -27,7 +27,7 @@
 
 ### 图 1：agentic 负载把 KV 的读路径推成主路径
 
-![Agentic KV read-write ratio](../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/agentic-kv-read-write-ratio.webp)
+![Agentic KV read-write ratio](../assets/subchapters/05/agentic-kv-read-write-ratio.webp)
 
 图 1 的意义在于把“KV lifecycle”从概念落到访问形状上：当读写比达到 `11.7x` 量级时，系统成本中心自然会从初次写入转向保留、恢复和复用。[1]
 
@@ -63,7 +63,7 @@ ScoutAttention 的核心启发不是单纯把 KV 搬回，而是让 CPU 通过 l
 
 ### 图 2：KV 生命周期已经天然跨越多层级内存
 
-![KV memory hierarchy](../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/agentic-kv-memory-hierarchy.svg)
+![KV memory hierarchy](../assets/subchapters/05/agentic-kv-memory-hierarchy.svg)
 
 图 2 在本节支持的不是“有层级”这个常识，而是更具体的判断：一旦 KV 要在 HBM、CPU memory 和远端层级之间被长期保留、迁移与恢复，它就已经更像生命周期对象，而不是一次性 spill 桶。[2][3]
 

@@ -27,7 +27,7 @@
 
 ### 图 1：agentic workflow 的真正压力往往来自反复触发的前缀阶段
 
-![CPU-centric agentic workflow](../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/cpu-centric-agentic-workflow.png)
+![CPU-centric agentic workflow](../assets/subchapters/14/cpu-centric-agentic-workflow.png)
 
 图 1 不是泛泛在画 workflow，而是在提醒读者关注图中反复出现的 prefill / resume / prefix re-enter 阶段。对本章判断来说，关键不是“有流程”，而是前缀阶段被频繁重启、重入和共享。[2][3][4]
 
@@ -45,7 +45,7 @@
 
 ### 图 2：从 tool-call / branch-resume 视角看，prefill 已经像独立服务动作
 
-![Agentic tool call prefill and offload workflow](../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/agentic-tool-call-offload-prefetch.svg)
+![Agentic tool call prefill and offload workflow](../assets/subchapters/14/agentic-tool-call-offload-prefetch.svg)
 
 图 2 支撑本节的第三个判断：agentic 负载下的 prefill 已经更像被频繁触发、可独立调度的服务动作，而不只是每个请求开头顺便做的一段计算。[1][4]
 

@@ -26,7 +26,7 @@
 
 ### 图 1：本节复用 dispatch 图，强调的是热点分布与拓扑失衡
 
-![Expert dispatch topology and hotspot distribution](../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/deepep-normal-dispatch.png)
+![Expert dispatch topology and hotspot distribution](../assets/subchapters/12/deepep-normal-dispatch.png)
 
 图 1 支撑的不是某个特定项目机制，而是一个更一般的判断：当分发与聚合已经需要显式考虑拓扑和并行组织时，MoE 的主要难题就不再是局部装载，而是长期平衡。[1]
 
@@ -53,7 +53,7 @@
 
 ### 图 2：动态平衡的目标不是“绝对均匀”，而是减少热点路径的系统放大
 
-![Wide expert parallelism and topology-aware placement](../../../review-expansion-workspace/agentic-ai-head-cpu-comprehensive/assets/nvidia-wide-ep-moe-2025.webp)
+![Wide expert parallelism and topology-aware placement](../assets/subchapters/12/nvidia-wide-ep-moe-2025.webp)
 
 图 2 在 `13` 中会被用来支撑“工业界已接受这是组织问题”；在本节中强调的则是另一层含义：一旦组织尺度升到 NVL72 / rack-scale，路由平衡就已经不可能只靠模型内部局部逻辑解决。[1]
 
