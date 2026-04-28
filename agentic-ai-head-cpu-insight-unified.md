@@ -8,7 +8,7 @@
 
 ## 执行摘要
 
-- **Agentic AI 正将系统瓶颈从 GPU 推向机头 CPU。** Georgia Tech 与 Intel 的联合研究（2025-11）表明，典型 Agentic 工作负载中工具处理占端到端延迟的 **50%–90.6%**；GPU 升级越快，瓶颈越迅速向 CPU 侧转移。
+- **Agentic AI 正将系统瓶颈从 GPU 推向机头 CPU。** 2025-11 发表的《Towards Understanding, Analyzing, and Optimizing Agentic AI Execution: A CPU-Centric Perspective》表明，典型 Agentic 工作负载中工具处理占端到端延迟的 **50%–90.6%**；GPU 升级越快，固定的 CPU 控制面开销占比越大，瓶颈向 CPU 侧转移的速度越快。
 - **算子下发（Operator Dispatch）已从"单机 kernel launch"演化为"分离式推理编排"，且权重量化越激进，"调度墙"越明显。** 2026 年多项独立研究显示，在量化小模型或高并发服务场景中，单次前向传播可能发射数百个微秒级 Kernel，每个 Launch 约 2.5 μs 的 CPU 侧驱动开销成为主导延迟；CPU 核心竞争可将该开销从微秒级放大到毫秒级，导致多 GPU 集群产生级联等待。vLLM V1 通过 Persistent Batch、Numpy 替代 Python Native 等重构，将吞吐提升 **1.7×**。
 - **KV Cache 卸载到主机内存是长上下文推理的必选项，但 CPU-GPU 传输开销决定收益上限。** 2025 下半年至 2026 年的 NOSA、ScoutAttention、CXL 内存扩展方案显示，卸载系统需同时约束跨设备传输量并隐藏延迟；NVIDIA Dynamo 给出的 Agentic 推理 cache hit 可达 **85%–97%**，read/write ratio 高达 **11.7x**，使 KV 管理从"容量问题"升级为"生命周期问题"。CXL 内存层可在生产建模中将 GPU 需求降低 **87%**。
 - **MoE 推理在内存受限场景下触发专家权重卸载，CPU 成为专家调度的 Orchestrator。** 2026 年 Speculating Experts 与 FluxMoE 等研究指出，专家权重从 CPU DRAM 按需加载会制造严重的 CPU-GPU 传输瓶颈；基于内部表示的推测预取可将 TPOT 降低 **14%**。NVIDIA Wide EP（2025-12）进一步将 host 侧压力从单请求驱动推向批级路由、拓扑感知放置和跨 GPU/跨节点数据流协同。

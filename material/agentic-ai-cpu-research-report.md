@@ -1,3 +1,7 @@
+> **Role:** 研究过程资产（research log）。本文件记录搜索进展、阶段性判断与工作笔记，不作为对外交付的最终洞察正文。最终正文见根目录 `agentic-ai-head-cpu-insight-unified.md`。
+>
+> **Status:** 活跃维护中。部分结论已迁移至统一稿，此处保留原始推理链以备追溯。
+
 # Agentic AI 推理负载特征对 AI CPU 的影响
 
 ## Status
@@ -85,6 +89,7 @@
 
 3. `MoE` 方向已经能支撑“KV 与 expert 竞争同一组 host 预算”的判断。
    - `FluxMoE` 直接给出 decoupled expert residency 这一机制，说明 GPU memory 正在被重新分配给更关键的 runtime state。
+   - `PROBE`（S048）进一步量化：实时预测式调度在 prefill 阶段相对静态 EP 可达 `1.32×` speedup，在 decoding 阶段相对 DeepSeek-EPLB 可达 `1.26×` throughput improvement，证明静态放置策略在语义漂移场景下会失效，而 host-side predictor 已成为 MoE 动态平衡的必要组件。
 
 4. `prefix cache / cache-aware placement` 方向开始和 `PrfaaS` 接上了。
    - `vLLM prefix caching` 给了机制基线；
@@ -114,6 +119,7 @@
 10. `MoE routing dynamic balance` 不是附属优化，而是 host-side orchestration 的组成部分。
    - `Wide Expert Parallelism` 说明 expert routing 已经上升为批级与机架级组织问题；
    - `FineMoE` 与 `SpecMoEOff` 进一步说明，CPU 不只搬专家，还需要通过 expert map、轨迹相似性和 speculative overlap 去平滑 hotspot、降低 miss 并隐藏传输延迟。
+   - `PROBE`（S048）用双轨流水线（dual-track pipeline）把专家预取和计算重叠，并把 host-side 实时 predictor 与求解器纳入标准路径，说明 MoE 平衡已从“事后重平衡”演进为“预测式前置调度”。
 
 11. `operator graphification` 的收益与代价都已经清楚到值得单独建模。
    - `vLLM V1` 与 `Event Tensor` 说明 piecewise/full CUDA Graphs、persistent kernels、dynamic megakernels 的确能压低 dispatch tax；
@@ -146,7 +152,7 @@
 当前还未完成、但对最终结论很关键的方向包括：
 
 - `D14` non-NVIDIA transfer/control-plane alternatives 的进一步 production 化证据
-- `D15-D17` 的更多 production 指标，尤其是 sparse KV policy hit quality、expert skew tail latency、graph fallback frequency
+- `D15-D17` 的更多 production 指标，尤其是 sparse KV policy hit quality、expert skew tail latency（**部分已填补：S048/PROBE 提供 1.32×/1.26× 量化证据，但仍需更宽模型范围验证**）、graph fallback frequency
 
 ## Current risk assessment
 
@@ -209,6 +215,8 @@
 - speculative overlap 能否把搬运延迟藏在额外 token 计算背后
 
 因此，`FineMoE`、`SpecMoEOff`、`Wide Expert Parallelism` 共同说明，MoE 路由已经从单 token gate 选择问题上升成 `batch-level balance + topology-aware placement + expert cache policy` 问题。
+
+`PROBE`（S048）在此基础上提供了更硬的 prefill 阶段证据：在 GPT-OSS-120B 上，实时预测式调度相对静态 EP 实现 `1.32×` prefill speedup，相对 DeepSeek-EPLB 实现 `1.26×` decode throughput，且对语义漂移（如 Code → Chinese 切换）保持鲁棒。这意味着 host CPU 不仅要处理 hotspot 和 miss，还要在 prefill 阶段持续运行轻量级预测模型并触发 placement update。
 
 ### 4. 算子图化编译在服务化推理中的利弊都很明确
 

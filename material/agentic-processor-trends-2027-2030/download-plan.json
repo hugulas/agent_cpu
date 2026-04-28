@@ -1,0 +1,101 @@
+[
+  {
+    "source_id": "T001",
+    "direction_id": "D01",
+    "title": "NVIDIA Vera CPU Delivers High Performance, Bandwidth, and Efficiency for AI Factories",
+    "url": "https://developer.nvidia.com/blog/nvidia-vera-cpu-delivers-high-performance-bandwidth-and-efficiency-for-ai-factories/",
+    "date": "2026-03-16",
+    "type": "official technical blog",
+    "strategy": "webpage"
+  },
+  {
+    "source_id": "T002",
+    "direction_id": "D01",
+    "title": "Inside the NVIDIA Rubin Platform: Six New Chips, One AI Supercomputer",
+    "url": "https://developer.nvidia.com/blog/inside-the-nvidia-rubin-platform-six-new-chips-one-ai-supercomputer/",
+    "date": "2026-01-05",
+    "type": "official technical blog",
+    "strategy": "webpage"
+  },
+  {
+    "source_id": "T003",
+    "direction_id": "D01",
+    "title": "NVIDIA Vera Rubin Opens Agentic AI Frontier",
+    "url": "https://nvidianews.nvidia.com/news/nvidia-vera-rubin-platform",
+    "date": "2026-03-16",
+    "type": "official press release",
+    "strategy": "webpage"
+  },
+  {
+    "source_id": "T004",
+    "direction_id": "D02",
+    "title": "AMD Delivering Open Rack Scale AI Infrastructure",
+    "url": "https://www.amd.com/en/blogs/2025/amd-delivering-open-rack-scale-ai-infrastructure-to-unlock-agentic-ai.html",
+    "date": "2025-06-12",
+    "type": "official technical blog",
+    "strategy": "webpage"
+  },
+  {
+    "source_id": "T005",
+    "direction_id": "D02",
+    "title": "AMD EPYC Server CPUs: Your Foundation for AI",
+    "url": "https://www.amd.com/en/products/processors/server/epyc/ai.html",
+    "date": "current",
+    "type": "official product page",
+    "strategy": "webpage"
+  },
+  {
+    "source_id": "T006",
+    "direction_id": "D03",
+    "title": "Intel Xeon 6 Processors with Performance-Cores",
+    "url": "https://www.intel.com/content/www/us/en/products/details/processors/xeon/xeon6-p-cores.html",
+    "date": "current",
+    "type": "official product page",
+    "strategy": "webpage"
+  },
+  {
+    "source_id": "T007",
+    "direction_id": "D07",
+    "title": "Specifications | UCIe Consortium",
+    "url": "https://www.uciexpress.org/specifications",
+    "date": "current",
+    "type": "official specification page",
+    "strategy": "webpage"
+  },
+  {
+    "source_id": "T008",
+    "direction_id": "D07",
+    "title": "Specifications | UALink Consortium",
+    "url": "https://ualinkconsortium.org/specification/",
+    "date": "current",
+    "type": "official specification page",
+    "strategy": "webpage"
+  },
+  {
+    "source_id": "T009",
+    "direction_id": "D07",
+    "title": "Introducing Compute Express Link CXL 4.0: Significant Improvements in Bandwidth, Connectivity, Memory Maintenance, and Security",
+    "url": "https://computeexpresslink.org/wp-content/uploads/2025/11/CXL_4.0-White-Paper_FINAL.pdf",
+    "date": "2025-11",
+    "type": "official white paper",
+    "strategy": "pdf"
+  },
+  {
+    "source_id": "T010",
+    "direction_id": "D06",
+    "title": "High-bandwidth memory (HBM) | Micron Technology",
+    "url": "https://www.micron.com/products/memory/hbm",
+    "date": "current",
+    "type": "official product page",
+    "strategy": "webpage"
+  },
+  {
+    "source_id": "T011",
+    "direction_id": "D06",
+    "title": "SK hynix Completes World's First HBM4 Development and Readies Mass Production",
+    "url": "https://news.skhynix.com/sk-hynix-completes-worlds-first-hbm4-development-and-readies-mass-production/",
+    "date": "2025-09-12",
+    "type": "official news release",
+    "strategy": "webpage"
+  }
+]
