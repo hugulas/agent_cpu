@@ -12,8 +12,8 @@
 | 8 | `08-主线二-prefix-cache之后的技术演化.md` | `done` | `S011 S016 S041 S042 S044 S045 S046 S047` | 补 routing/events/identity 图，补 `0.1`、`50ms->500ms+` 等数据 | 已补判断-证据对齐表、`2` 张图、`0.1` 阈值、`50ms -> 500ms+` 抖动、`40%` 多模态命中问题、逐段引用与参考文献 |
 | 9 | `09-主线二-kv的工业控制平面化趋势.md` | `done` | `S003 S014 S034 S042` | 补工业 control plane 图和 policy 数据 | 已补判断-证据对齐表、`2` 张图、KV-aware placement / event API / unified transfer 证据、逐段引用与参考文献 |
 | 10 | `10-主线三-稀疏计算优势为何不自动转化成系统收益.md` | `done` | `S008 S035 S036 S037` | 补 MoE 系统放大链图与吞吐数据 | 已补判断-证据对齐表、`2` 张图、`3.0x` / `2.5x` 数据、同步链与拓扑因果、逐段引用与参考文献 |
-| 11 | `11-主线三-专家驻留预取与动态平衡.md` | `done` | `S008 S036 S037` | 补 prefetch / residency 图和数字 | 已补判断-证据对齐表、`2` 张图、FluxMoE / FineMoE / SpecMoEOff 三路线对照、逐段引用与参考文献 |
-| 12 | `12-主线三-moe路由动态平衡问题.md` | `done` | `S035 S036 S037` | 补 skew / topology-aware balance 图和逐段引用 | 已补判断-证据对齐表、`2` 张图、skew / topology / overlap 的控制面化论证、逐段引用与参考文献 |
+| 11 | `11-主线三-moe路由动态平衡问题.md` | `done` | `S035 S036 S037 S048` | 补 skew / topology-aware balance 图和逐段引用；**新增 S048 PROBE 实时预测调度证据** | 已补判断-证据对齐表、`2` 张图 + **S048 2 张图**、skew / topology / overlap 的控制面化论证、**PROBE 1.32×/1.26× 及 DeepSeek-EPLB 对比**、逐段引用与参考文献 |
+| 12 | `12-主线三-专家驻留预取与动态平衡.md` | `done` | `S008 S036 S037 S048` | 补 prefetch / residency 图和数字；**新增 S048 PROBE 作为第四条路线** | 已补判断-证据对齐表、`2` 张图、FluxMoE / FineMoE / SpecMoEOff / **PROBE** 四路线对照、**PROBE dual-track hidden scheduling 与 prefill 阶段可行性**、逐段引用与参考文献 |
 | 13 | `13-主线三-工业界当前吸收到了哪一步.md` | `done` | `S035 S031 S032` | 补 adoption 状态数据和平台图 | 已补判断-证据对齐表、`2` 张图、Wide EP 与 Vera / Rubin 平台吸收信号、逐段引用与参考文献 |
 | 14 | `14-主线四-agentic为什么特别适合拆出prefill.md` | `done` | `S001 S028 S029 S030` | 补 workload 形态图和 `100 agents / 4.5x` 数据 | 已补判断-证据对齐表、`2` 张图、`100` agents / `1,500+` tool calls / `4.5x` 数据、逐段引用与参考文献 |
 | 15 | `15-主线四-从单集群pd到prefill-as-a-service.md` | `done` | `S001 S002 S003 S015 S023` | 补 PrfaaS 架构图和 `+54% / -64% / +32%` 数据 | 已补判断-证据对齐表、`2` 张图、`+54%` / `-64%` / `+32%` 数据、边界条件与逐段引用 |

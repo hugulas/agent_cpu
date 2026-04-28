@@ -65,8 +65,8 @@
 | 8 | `08-主线二-prefix-cache之后的技术演化.md` | 主线二 | affinity routing、retention、events、identity |
 | 9 | `09-主线二-kv的工业控制平面化趋势.md` | 主线二 | KV-aware routing、warm tier、state visibility |
 | 10 | `10-主线三-稀疏计算优势为何不自动转化成系统收益.md` | 主线三 | cold expert、miss、同步链 |
-| 11 | `11-主线三-专家驻留预取与动态平衡.md` | 主线三 | FluxMoE、FineMoE、SpecMoEOff |
-| 12 | `12-主线三-moe路由动态平衡问题.md` | 主线三 | skew、hot/cold、topology、batch balance |
+| 11 | `11-主线三-moe路由动态平衡问题.md` | 主线三 | skew、hot/cold、topology、batch balance |
+| 12 | `12-主线三-专家驻留预取与动态平衡.md` | 主线三 | FluxMoE、FineMoE、SpecMoEOff |
 | 13 | `13-主线三-工业界当前吸收到了哪一步.md` | 主线三 | Wide EP 与工业吸收 |
 | 14 | `14-主线四-agentic为什么特别适合拆出prefill.md` | 主线四 | prefill-first、shared prefix、remote prefill |
 | 15 | `15-主线四-从单集群pd到prefill-as-a-service.md` | 主线四 | cross-cluster、cross-datacenter、scheduling |
