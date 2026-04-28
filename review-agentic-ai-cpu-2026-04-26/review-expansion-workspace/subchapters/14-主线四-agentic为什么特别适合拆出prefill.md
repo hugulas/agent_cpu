@@ -6,9 +6,9 @@
 
 | 判断 | 直接支撑材料 | 关键数字或图 |
 | --- | --- | --- |
-| agentic workload 比传统 chat 更容易呈现 prefill-first 形态 | `S001 (Prefill-as-a-Service) S028 (Kimi Agent Swarm) S029 (Kimi K2.5) S030 (Mobile Use Agent)` | `100` sub-agents；`1,500+` tool calls；visual / GUI multi-session 形态 |
+| agentic workload 比传统 chat 更容易呈现 prefill-first 形态 | `S001 (Prefill-as-a-Service) S028 (Kimi Agent Swarm) S029 (Kimi K2.5) S030 (Mobile Use Agent)`；**S051** (Continuum) | `100` sub-agents；`1,500+` tool calls；工具调用间隙导致 KV 驱逐和 prefill 重算；延迟 `1.12x`~`3.66x` |
 | shared prefix 在多代理与工具链场景中是结构性存在，而不是偶然重复 | `S028 (Kimi Agent Swarm) S029 (Kimi K2.5) S030 (Mobile Use Agent)` | 公共 role / tool schema / session trunk；`4.5x` sequential wall-clock reduction |
-| remote prefill 之所以在 2025H2+ 变现实，是因为 reduced-KV、prefix reuse 与 KV lifecycle 已经到位 | `S001 (Prefill-as-a-Service) S029 (Kimi K2.5) S030 (Mobile Use Agent)` | PD/PraaS 架构图；visual-agent burst；跨池恢复逻辑 |
+| remote prefill 之所以在 2025H2+ 变现实，是因为 reduced-KV、prefix reuse 与 KV lifecycle 已经到位 | `S001 (Prefill-as-a-Service) S029 (Kimi K2.5) S030 (Mobile Use Agent)`；**S051** (Continuum) | PD/PraaS 架构图；visual-agent burst；跨池恢复逻辑；TTL pinning 减少跨轮重算 |
 
 ### 1. 本章核心判断
 
@@ -24,6 +24,10 @@
 - 新上下文、工具 schema 和视觉输入持续注入。
 
 这会让系统更容易先被 prefill 压满，而不是先被 decode 压满。Kimi Agent Swarm / K2.5 的公开形态就是最直接的证据：系统支持最多 `100` 个 sub-agents、`1,500+` tool calls，并给出相对顺序执行最多 `4.5x` 的 wall-clock 改善。[2][3] 这些数字背后的真实含义不是“工具调用很多”，而是**会话启动、共享前缀复用和上下文再进入会变得极其频繁**。
+
+**Continuum**（S051）从系统机制层面给出了更深层的解释：在多轮 agentic workload 中，每一次工具调用都在 LLM 请求之间制造暂停，传统推理引擎的"回合结束即驱逐"策略会触发 KV cache 驱逐，导致后续轮次必须重新 prefill 或从 CPU DRAM 加载。Continuum 的评估表明，这种"工具间隙 → KV 驱逐 → prefill 重算"的链式成本在 SWE-Bench 和 BFCL 上可被放大到延迟 `1.12x`~`3.66x`，在真实 SWE-agent 负载上最高 `8.18x`。[5] 这意味着 agentic 场景中的 prefill 不仅是"更频繁"，而且是**"被迫重复"**——大量 prefill 计算本可以通过保留 KV cache 避免，但传统 serving 策略不知道工具何时返回，只能保守驱逐。
+
+因此，agentic workload 的 prefill-first 特征有两个来源：一是业务逻辑本身产生大量新上下文（工具结果回填、分支启动），二是**现有 serving 策略在工具间隙中浪费了本可复用的 KV，迫使系统反复执行本可避免的 prefill**。
 
 ### 图 1：agentic workflow 的真正压力往往来自反复触发的前缀阶段
 
@@ -62,7 +66,7 @@
 
 ### 6. 小结
 
-本节要收束出的结论是：**agentic inference 之所以特别适合拆出 prefill，不是因为它比传统工作负载“上下文更长”这么简单，而是因为它同时具备 prefill-first、shared-prefix-rich 和 remote-prefill-feasible 三个特征，使前缀计算天然更适合被独立部署和控制。** 这一结论已被 `100` sub-agents、`1,500+` tool calls、`4.5x` wall-clock 改善和 PraaS 的跨池化方向共同支撑。下一章就顺着这条逻辑，分析系统如何从单集群 PD 走向 Prefill-as-a-Service。[1][2][3][4]
+本节要收束出的结论是：**agentic inference 之所以特别适合拆出 prefill，不是因为它比传统工作负载“上下文更长”这么简单，而是因为它同时具备 prefill-first、shared-prefix-rich 和 remote-prefill-feasible 三个特征，使前缀计算天然更适合被独立部署和控制。** 这一结论已被 `100` sub-agents、`1,500+` tool calls、Continuum 量化的 `1.12x`~`3.66x` 工具间隙惩罚、`4.5x` wall-clock 改善和 PraaS 的跨池化方向共同支撑。下一章就顺着这条逻辑，分析系统如何从单集群 PD 走向 Prefill-as-a-Service。[1][2][3][4][5]
 
 ### 参考文献
 
@@ -73,3 +77,5 @@
 [3] [Kimi K2.5: Visual Agentic Intelligence](../material/reference-notes/s029-kimi-k2-5-visual-agentic-intelligence.md). 2026.
 
 [4] [Anthropic / OpenClaw / Mobile Use Agent materials as multimodal or multi-session shape evidence](../material/reference-notes/s030-anthropic-openclaw-mobile-use-agent-materials-as-multimodal-or-multi-session-sha.md). 2026.
+
+[5] [Continuum: Efficient and Robust Multi-Turn LLM Agent Scheduling with KV Cache Time-to-Live](../material/reference-notes/s051-continuum-kv-cache-ttl-multi-turn-agent.md). 2025-11-04.

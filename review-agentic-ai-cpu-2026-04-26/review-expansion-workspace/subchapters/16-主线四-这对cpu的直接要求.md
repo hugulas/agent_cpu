@@ -6,9 +6,9 @@
 
 | 判断 | 直接支撑材料 | 关键数字或图 |
 | --- | --- | --- |
-| 分布式推理 CPU 的第一类需求是更强的 transfer stack，而不是更强的通用算力 | `S001 (Prefill-as-a-Service) S003 (NVIDIA Dynamo agentic) S009 (NVIDIA Inference Transfer Library) S014 (NVIDIA Dynamo NIXL)` | NIXL unified API；non-blocking transfer；跨池 PraaS |
+| 分布式推理 CPU 的第一类需求是更强的 transfer stack，而不是更强的通用算力 | `S001 (Prefill-as-a-Service) S003 (NVIDIA Dynamo agentic) S009 (NVIDIA Inference Transfer Library) S014 (NVIDIA Dynamo NIXL)`；**S052** (Sutradhara) | NIXL unified API；non-blocking transfer；orchestrator-engine 五 API；跨池 PraaS |
 | 平台 CPU 已在为 orchestration / data movement 角色增配带宽与一致性互连 | `S031 (NVIDIA Vera CPU) S032 (NVIDIA Rubin Platform) S033 (NVIDIA Grace CPU)` | Vera `1.2TB/s`；Grace / Vera `1.8TB/s` NVLink-C2C；uniform memory access |
-| AI CPU 的关键指标是尾延迟稳定性、并发 completion 能力、内存带宽与状态可见性 | `S001 (Prefill-as-a-Service) S003 (NVIDIA Dynamo agentic) S008 (FluxMoE) S009 (NVIDIA Inference Transfer Library)` | KV-aware placement；dynamic metadata exchange；expert residency / state orchestration |
+| AI CPU 的关键指标是尾延迟稳定性、并发 completion 能力、内存带宽与状态可见性 | `S001 (Prefill-as-a-Service) S003 (NVIDIA Dynamo agentic) S008 (FluxMoE) S009 (NVIDIA Inference Transfer Library)`；**S052** (Sutradhara) | KV-aware placement；dynamic metadata exchange；semantic KV cache tagging；expert residency / state orchestration |
 
 ### 1. 本章核心判断
 
@@ -53,6 +53,8 @@
 
 这意味着 CPU 需要持有的不只是 worker health view，而是 state location view、reuse value view 和 path cost view。因此，cache-aware placement 会直接推动 CPU 软件栈向更重的元数据控制面演化。
 
+**Sutradhara**（S052）把这一要求推进到了语义层。它的五 API 接口层（`hint_tool_dependency`、`hint_prefix_reuse`、`prompt_split`、`stream_dispatch`、`report_cache_state`）说明：orchestrator 与 engine 之间必须持续交换**结构化语义信息**，而不是不透明的 request-response。orchestrator 需要告诉 engine"下一轮 prefill 可以提前开始哪些部分"，engine 需要告诉 orchestrator"哪些 KV block 是高价值、哪些是瞬态"。这种信息交换对 CPU 的要求不只是"带宽够传数据"，而是**"延迟够低、抖动够小、并发处理能力够强"**——因为每一次工具调用间隙都可能触发一次跨层协同，而工具调用在 agentic FTR 延迟中占 `30%`~`85%`。[9]
+
 ### 5. remote prefill node：为什么节点开始分角色
 
 Prefill-as-a-Service 的直接工程后果之一，是节点角色开始明显分化。至少会出现 prefill-heavy ingress node、decode-heavy serving node、capacity-oriented state node、coordination-heavy swarm node 和 remote prefill service node。
@@ -81,10 +83,11 @@ Vera、Rubin 和 Grace 的公开资料给了平台层的强证据。Vera 提供 
 2. 更强的一致性与近端互连。state movement 和 resume path 越来越依赖 CPU 与 GPU、NIC、memory tiers 之间低摩擦协作。
 3. 更稳定的多租户行为。control-plane CPU 最怕 jitter，不只是怕平均慢。
 4. 更明确的与 DPU / SuperNIC 协同。不可能把所有数据面和控制面都堆在 CPU 上，必须有人帮它让路。
+5. **跨层语义协同能力**。orchestrator 与 engine 之间的 hint 交换（如 Sutradhara 的五 API）要求 CPU 侧能够低延迟地维护、查询和传递结构化元数据——这不是传统 CPU 的通用计算指标，而是**状态目录服务 + 事件总线 + 策略引擎**的组合能力。[9]
 
 ### 8. 小结
 
-一旦推理系统进入跨池、跨角色、跨层级状态编排阶段，AI CPU 的设计目标就会从“通用 host CPU”转向“分布式推理控制平面 CPU”。而 `transfer stack + KV movement + cache-aware placement + remote prefill node`，正是这一转变最具体的四个落点。以上四条主线也由此收束到同一个结论：AI CPU 的核心竞争力，正在从通用算力转向低抖动控制能力、高带宽状态承载和强一致性移动协同。[1][2][3][4][5][6][7][8]
+一旦推理系统进入跨池、跨角色、跨层级状态编排阶段，AI CPU 的设计目标就会从“通用 host CPU”转向“分布式推理控制平面 CPU”。而 `transfer stack + KV movement + cache-aware placement + remote prefill node + cross-layer semantic coordination`，正是这一转变最具体的五个落点。以上四条主线也由此收束到同一个结论：AI CPU 的核心竞争力，正在从通用算力转向低抖动控制能力、高带宽状态承载、强一致性移动协同和跨层语义编排能力。[1][2][3][4][5][6][7][8][9]
 
 后续章节将进一步分析 NVIDIA Vera / Grace 等平台设计如何响应这一转变，并梳理当前仍 open 的 benchmark 与研究空白。
 
@@ -105,3 +108,5 @@ Vera、Rubin 和 Grace 的公开资料给了平台层的强证据。Vera 提供 
 [7] [Grace CPU Delivers High Bandwidth and Efficiency for Modern Data Centers](../material/reference-notes/s033-grace-cpu-delivers-high-bandwidth-and-efficiency-for-modern-data-centers.md). 2025-12-05.
 
 [8] [Enhancing Distributed Inference Performance with the NVIDIA Inference Transfer Library](../material/reference-notes/s009-enhancing-distributed-inference-performance-with-the-nvidia-inference-transfer-l.md). 2026-03-09.
+
+[9] [Sutradhara: An Intelligent Orchestrator-Engine Co-design for Tool-based Agentic Inference](../material/reference-notes/s052-sutradhara-orchestrator-engine-codesign.md). 2026-01-19.
