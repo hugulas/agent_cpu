@@ -70,12 +70,12 @@
 
 ### 参考文献
 
-[1] [Prefill-as-a-Service: KVCache of Next-Generation Models Could Go Cross-Datacenter](../material/reference-notes/s001-prefill-as-a-service-kvcache-of-next-generation-models-could-go-cross-datacenter.md). 2026-04.
+[1] [Prefill-as-a-Service: KVCache of Next-Generation Models Could Go Cross-Datacenter](../../../material/reference-notes/s001-prefill-as-a-service-kvcache-of-next-generation-models-could-go-cross-datacenter.md). 2026-04.
 
-[2] [Kimi Introduces Agent Swarm: Let 100 AI Agents Work for You](../material/reference-notes/s028-kimi-introduces-agent-swarm-let-100-ai-agents-work-for-you.md). 2026-04-11.
+[2] [Kimi Introduces Agent Swarm: Let 100 AI Agents Work for You](../../../material/reference-notes/s028-kimi-introduces-agent-swarm-let-100-ai-agents-work-for-you.md). 2026-04-11.
 
-[3] [Kimi K2.5: Visual Agentic Intelligence](../material/reference-notes/s029-kimi-k2-5-visual-agentic-intelligence.md). 2026.
+[3] [Kimi K2.5: Visual Agentic Intelligence](../../../material/reference-notes/s029-kimi-k2-5-visual-agentic-intelligence.md). 2026.
 
-[4] [Anthropic / OpenClaw / Mobile Use Agent materials as multimodal or multi-session shape evidence](../material/reference-notes/s030-anthropic-openclaw-mobile-use-agent-materials-as-multimodal-or-multi-session-sha.md). 2026.
+[4] [Anthropic / OpenClaw / Mobile Use Agent materials as multimodal or multi-session shape evidence](../../../material/reference-notes/s030-anthropic-openclaw-mobile-use-agent-materials-as-multimodal-or-multi-session-sha.md). 2026.
 
-[5] [Continuum: Efficient and Robust Multi-Turn LLM Agent Scheduling with KV Cache Time-to-Live](../material/reference-notes/s051-continuum-kv-cache-ttl-multi-turn-agent.md). 2025-11-04.
+[5] [Continuum: Efficient and Robust Multi-Turn LLM Agent Scheduling with KV Cache Time-to-Live](../../../material/reference-notes/s051-continuum-kv-cache-ttl-multi-turn-agent.md). 2025-11-04.

@@ -82,18 +82,18 @@ S005 的测量为此提供了直接证据：在 Llama 3.1 8B（4×H200）上，*
 
 ### 参考文献
 
-[1] [Prefill-as-a-Service: KVCache of Next-Generation Models Could Go Cross-Datacenter](../material/reference-notes/s001-prefill-as-a-service-kvcache-of-next-generation-models-could-go-cross-datacenter.md). 2026-04.
+[1] [Prefill-as-a-Service: KVCache of Next-Generation Models Could Go Cross-Datacenter](../../../material/reference-notes/s001-prefill-as-a-service-kvcache-of-next-generation-models-could-go-cross-datacenter.md). 2026-04.
 
-[2] [Kimi Introduces Agent Swarm: Let 100 AI Agents Work for You](../material/reference-notes/s028-kimi-introduces-agent-swarm-let-100-ai-agents-work-for-you.md). 2026-04-11.
+[2] [Kimi Introduces Agent Swarm: Let 100 AI Agents Work for You](../../../material/reference-notes/s028-kimi-introduces-agent-swarm-let-100-ai-agents-work-for-you.md). 2026-04-11.
 
-[3] [Kimi K2.5: Visual Agentic Intelligence](../material/reference-notes/s029-kimi-k2-5-visual-agentic-intelligence.md). 2026.
+[3] [Kimi K2.5: Visual Agentic Intelligence](../../../material/reference-notes/s029-kimi-k2-5-visual-agentic-intelligence.md). 2026.
 
-[4] [Anthropic / OpenClaw / Mobile Use Agent materials as multimodal or multi-session shape evidence](../material/reference-notes/s030-anthropic-openclaw-mobile-use-agent-materials-as-multimodal-or-multi-session-sha.md). 2026.
+[4] [Anthropic / OpenClaw / Mobile Use Agent materials as multimodal or multi-session shape evidence](../../../material/reference-notes/s030-anthropic-openclaw-mobile-use-agent-materials-as-multimodal-or-multi-session-sha.md). 2026.
 
-[5] [Full-Stack Optimizations for Agentic Inference with NVIDIA Dynamo](../material/reference-notes/s003-full-stack-optimizations-for-agentic-inference-with-nvidia-dynamo.md). 2026-04-17.
+[5] [Full-Stack Optimizations for Agentic Inference with NVIDIA Dynamo](../../../material/reference-notes/s003-full-stack-optimizations-for-agentic-inference-with-nvidia-dynamo.md). 2026-04-17.
 
-[6] [BentoML Handbook: Prefill-decode disaggregation](../material/reference-notes/s021-prefill-decode-disaggregation.md). 2026/current.
+[6] [BentoML Handbook: Prefill-decode disaggregation](../../../material/reference-notes/s021-prefill-decode-disaggregation.md). 2026/current.
 
-[7] [Kv Events Subscriber — vLLM](../material/reference-notes/s042-kv-events-subscriber-vllm.md). current.
+[7] [Kv Events Subscriber — vLLM](../../../material/reference-notes/s042-kv-events-subscriber-vllm.md). current.
 
-[8] [Characterizing CPU-Induced Slowdowns in Multi-GPU LLM Inference](../material/reference-notes/s005-characterizing-cpu-induced-slowdowns-in-multi-gpu-llm-inference.md). 2026-03.
+[8] [Characterizing CPU-Induced Slowdowns in Multi-GPU LLM Inference](../../../material/reference-notes/s005-characterizing-cpu-induced-slowdowns-in-multi-gpu-llm-inference.md). 2026-03.

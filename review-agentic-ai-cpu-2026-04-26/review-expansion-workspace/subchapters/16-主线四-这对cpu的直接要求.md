@@ -93,20 +93,20 @@ Vera、Rubin 和 Grace 的公开资料给了平台层的强证据。Vera 提供 
 
 ### 参考文献
 
-[1] [Prefill-as-a-Service: KVCache of Next-Generation Models Could Go Cross-Datacenter](../material/reference-notes/s001-prefill-as-a-service-kvcache-of-next-generation-models-could-go-cross-datacenter.md). 2026-04.
+[1] [Prefill-as-a-Service: KVCache of Next-Generation Models Could Go Cross-Datacenter](../../../material/reference-notes/s001-prefill-as-a-service-kvcache-of-next-generation-models-could-go-cross-datacenter.md). 2026-04.
 
-[2] [Full-Stack Optimizations for Agentic Inference with NVIDIA Dynamo](../material/reference-notes/s003-full-stack-optimizations-for-agentic-inference-with-nvidia-dynamo.md). 2026-04-17.
+[2] [Full-Stack Optimizations for Agentic Inference with NVIDIA Dynamo](../../../material/reference-notes/s003-full-stack-optimizations-for-agentic-inference-with-nvidia-dynamo.md). 2026-04-17.
 
-[3] [FluxMoE: Decoupling Expert Residency for High-Performance MoE Serving](../material/reference-notes/s008-fluxmoe-decoupling-expert-residency-for-high-performance-moe-serving.md). 2026-04-03.
+[3] [FluxMoE: Decoupling Expert Residency for High-Performance MoE Serving](../../../material/reference-notes/s008-fluxmoe-decoupling-expert-residency-for-high-performance-moe-serving.md). 2026-04-03.
 
-[4] [NVIDIA Dynamo: Introducing NIXL (Inference Transfer Library)](../material/reference-notes/s014-nvidia-dynamo-blog-nixl-section.md). 2026-03.
+[4] [NVIDIA Dynamo: Introducing NIXL (Inference Transfer Library)](../../../material/reference-notes/s014-nvidia-dynamo-blog-nixl-section.md). 2026-03.
 
-[5] [NVIDIA Vera CPU Delivers High Performance, Bandwidth, and Efficiency for AI Factories](../material/reference-notes/s031-nvidia-vera-cpu-delivers-high-performance-bandwidth-and-efficiency-for-ai-factor.md). 2026-03-16.
+[5] [NVIDIA Vera CPU Delivers High Performance, Bandwidth, and Efficiency for AI Factories](../../../material/reference-notes/s031-nvidia-vera-cpu-delivers-high-performance-bandwidth-and-efficiency-for-ai-factor.md). 2026-03-16.
 
-[6] [Inside the NVIDIA Rubin Platform: Six New Chips, One AI Supercomputer](../material/reference-notes/s032-inside-the-nvidia-rubin-platform-six-new-chips-one-ai-supercomputer.md). 2026-01.
+[6] [Inside the NVIDIA Rubin Platform: Six New Chips, One AI Supercomputer](../../../material/reference-notes/s032-inside-the-nvidia-rubin-platform-six-new-chips-one-ai-supercomputer.md). 2026-01.
 
-[7] [Grace CPU Delivers High Bandwidth and Efficiency for Modern Data Centers](../material/reference-notes/s033-grace-cpu-delivers-high-bandwidth-and-efficiency-for-modern-data-centers.md). 2025-12-05.
+[7] [Grace CPU Delivers High Bandwidth and Efficiency for Modern Data Centers](../../../material/reference-notes/s033-grace-cpu-delivers-high-bandwidth-and-efficiency-for-modern-data-centers.md). 2025-12-05.
 
-[8] [Enhancing Distributed Inference Performance with the NVIDIA Inference Transfer Library](../material/reference-notes/s009-enhancing-distributed-inference-performance-with-the-nvidia-inference-transfer-l.md). 2026-03-09.
+[8] [Enhancing Distributed Inference Performance with the NVIDIA Inference Transfer Library](../../../material/reference-notes/s009-enhancing-distributed-inference-performance-with-the-nvidia-inference-transfer-l.md). 2026-03-09.
 
-[9] [Sutradhara: An Intelligent Orchestrator-Engine Co-design for Tool-based Agentic Inference](../material/reference-notes/s052-sutradhara-orchestrator-engine-codesign.md). 2026-01-19.
+[9] [Sutradhara: An Intelligent Orchestrator-Engine Co-design for Tool-based Agentic Inference](../../../material/reference-notes/s052-sutradhara-orchestrator-engine-codesign.md). 2026-01-19.

@@ -69,19 +69,19 @@
 
 ### 参考文献
 
-[1] [Characterizing CPU-Induced Slowdowns in Multi-GPU LLM Inference](../material/reference-notes/s005-characterizing-cpu-induced-slowdowns-in-multi-gpu-llm-inference.md). 2026-03-25.
+[1] [Characterizing CPU-Induced Slowdowns in Multi-GPU LLM Inference](../../material/reference-notes/s005-characterizing-cpu-induced-slowdowns-in-multi-gpu-llm-inference.md). 2026-03-25.
 
-[2] [Full-Stack Optimizations for Agentic Inference with NVIDIA Dynamo](../material/reference-notes/s003-full-stack-optimizations-for-agentic-inference-with-nvidia-dynamo.md). 2026-04-17.
+[2] [Full-Stack Optimizations for Agentic Inference with NVIDIA Dynamo](../../material/reference-notes/s003-full-stack-optimizations-for-agentic-inference-with-nvidia-dynamo.md). 2026-04-17.
 
-[3] [Prefill-as-a-Service: KVCache of Next-Generation Models Could Go Cross-Datacenter](../material/reference-notes/s001-prefill-as-a-service-kvcache-of-next-generation-models-could-go-cross-datacenter.md). 2026-04.
+[3] [Prefill-as-a-Service: KVCache of Next-Generation Models Could Go Cross-Datacenter](../../material/reference-notes/s001-prefill-as-a-service-kvcache-of-next-generation-models-could-go-cross-datacenter.md). 2026-04.
 
-[4] [Scaling Large MoE Models with Wide Expert Parallelism on NVL72 Rack-Scale Systems](../material/reference-notes/s035-scaling-large-moe-models-with-wide-expert-parallelism-on-nvl72-rack-scale-system.md). 2025-12-18.
+[4] [Scaling Large MoE Models with Wide Expert Parallelism on NVL72 Rack-Scale Systems](../../material/reference-notes/s035-scaling-large-moe-models-with-wide-expert-parallelism-on-nvl72-rack-scale-system.md). 2025-12-18.
 
-[5] [vLLM CUDA Graphs Design Document](../material/reference-notes/s039-vllm-cuda-graphs-design-document.md). current.
+[5] [vLLM CUDA Graphs Design Document](../../material/reference-notes/s039-vllm-cuda-graphs-design-document.md). current.
 
-[6] [BentoML Handbook: Prefill-decode disaggregation](../material/reference-notes/s021-prefill-decode-disaggregation.md). 2026/current.
+[6] [BentoML Handbook: Prefill-decode disaggregation](../../material/reference-notes/s021-prefill-decode-disaggregation.md). 2026/current.
 
-[7] [NVIDIA Vera CPU Delivers High Performance, Bandwidth, and Efficiency for AI Factories](../material/reference-notes/s031-nvidia-vera-cpu-delivers-high-performance-bandwidth-and-efficiency-for-ai-factor.md). 2026-03-16.
+[7] [NVIDIA Vera CPU Delivers High Performance, Bandwidth, and Efficiency for AI Factories](../../material/reference-notes/s031-nvidia-vera-cpu-delivers-high-performance-bandwidth-and-efficiency-for-ai-factor.md). 2026-03-16.
 
 ## 1. 引言
 
@@ -119,19 +119,19 @@
 
 ### 参考文献
 
-[1] [Characterizing CPU-Induced Slowdowns in Multi-GPU LLM Inference](../material/reference-notes/s005-characterizing-cpu-induced-slowdowns-in-multi-gpu-llm-inference.md). 2026-03-25.
+[1] [Characterizing CPU-Induced Slowdowns in Multi-GPU LLM Inference](../../material/reference-notes/s005-characterizing-cpu-induced-slowdowns-in-multi-gpu-llm-inference.md). 2026-03-25.
 
-[2] [Full-Stack Optimizations for Agentic Inference with NVIDIA Dynamo](../material/reference-notes/s003-full-stack-optimizations-for-agentic-inference-with-nvidia-dynamo.md). 2026-04-17.
+[2] [Full-Stack Optimizations for Agentic Inference with NVIDIA Dynamo](../../material/reference-notes/s003-full-stack-optimizations-for-agentic-inference-with-nvidia-dynamo.md). 2026-04-17.
 
-[3] [Prefill-as-a-Service: KVCache of Next-Generation Models Could Go Cross-Datacenter](../material/reference-notes/s001-prefill-as-a-service-kvcache-of-next-generation-models-could-go-cross-datacenter.md). 2026-04.
+[3] [Prefill-as-a-Service: KVCache of Next-Generation Models Could Go Cross-Datacenter](../../material/reference-notes/s001-prefill-as-a-service-kvcache-of-next-generation-models-could-go-cross-datacenter.md). 2026-04.
 
-[4] [Scaling Large MoE Models with Wide Expert Parallelism on NVL72 Rack-Scale Systems](../material/reference-notes/s035-scaling-large-moe-models-with-wide-expert-parallelism-on-nvl72-rack-scale-system.md). 2025-12-18.
+[4] [Scaling Large MoE Models with Wide Expert Parallelism on NVL72 Rack-Scale Systems](../../material/reference-notes/s035-scaling-large-moe-models-with-wide-expert-parallelism-on-nvl72-rack-scale-system.md). 2025-12-18.
 
-[5] [BentoML Handbook: Prefill-decode disaggregation](../material/reference-notes/s021-prefill-decode-disaggregation.md). 2026/current.
+[5] [BentoML Handbook: Prefill-decode disaggregation](../../material/reference-notes/s021-prefill-decode-disaggregation.md). 2026/current.
 
-[6] [NVIDIA Vera CPU Delivers High Performance, Bandwidth, and Efficiency for AI Factories](../material/reference-notes/s031-nvidia-vera-cpu-delivers-high-performance-bandwidth-and-efficiency-for-ai-factor.md). 2026-03-16.
+[6] [NVIDIA Vera CPU Delivers High Performance, Bandwidth, and Efficiency for AI Factories](../../material/reference-notes/s031-nvidia-vera-cpu-delivers-high-performance-bandwidth-and-efficiency-for-ai-factor.md). 2026-03-16.
 
-[7] [Inside the NVIDIA Rubin Platform: Six New Chips, One AI Supercomputer](../material/reference-notes/s032-inside-the-nvidia-rubin-platform-six-new-chips-one-ai-supercomputer.md). 2026-01.
+[7] [Inside the NVIDIA Rubin Platform: Six New Chips, One AI Supercomputer](../../material/reference-notes/s032-inside-the-nvidia-rubin-platform-six-new-chips-one-ai-supercomputer.md). 2026-01.
 
 ## 2. 核心命题与全文主线
 
@@ -188,29 +188,29 @@
 
 ### 参考文献
 
-[1] [Full-Stack Optimizations for Agentic Inference with NVIDIA Dynamo](../material/reference-notes/s003-full-stack-optimizations-for-agentic-inference-with-nvidia-dynamo.md). 2026-04-17.
+[1] [Full-Stack Optimizations for Agentic Inference with NVIDIA Dynamo](../../material/reference-notes/s003-full-stack-optimizations-for-agentic-inference-with-nvidia-dynamo.md). 2026-04-17.
 
-[2] [Prefill-as-a-Service: KVCache of Next-Generation Models Could Go Cross-Datacenter](../material/reference-notes/s001-prefill-as-a-service-kvcache-of-next-generation-models-could-go-cross-datacenter.md). 2026-04.
+[2] [Prefill-as-a-Service: KVCache of Next-Generation Models Could Go Cross-Datacenter](../../material/reference-notes/s001-prefill-as-a-service-kvcache-of-next-generation-models-could-go-cross-datacenter.md). 2026-04.
 
-[3] [FluxMoE: Decoupling Expert Residency for High-Performance MoE Serving](../material/reference-notes/s008-fluxmoe-decoupling-expert-residency-for-high-performance-moe-serving.md). 2026-04-03.
+[3] [FluxMoE: Decoupling Expert Residency for High-Performance MoE Serving](../../material/reference-notes/s008-fluxmoe-decoupling-expert-residency-for-high-performance-moe-serving.md). 2026-04-03.
 
-[4] [Scaling Large MoE Models with Wide Expert Parallelism on NVL72 Rack-Scale Systems](../material/reference-notes/s035-scaling-large-moe-models-with-wide-expert-parallelism-on-nvl72-rack-scale-system.md). 2025-12-18.
+[4] [Scaling Large MoE Models with Wide Expert Parallelism on NVL72 Rack-Scale Systems](../../material/reference-notes/s035-scaling-large-moe-models-with-wide-expert-parallelism-on-nvl72-rack-scale-system.md). 2025-12-18.
 
-[5] [Kimi Introduces Agent Swarm: Let 100 AI Agents Work for You](../material/reference-notes/s028-kimi-introduces-agent-swarm-let-100-ai-agents-work-for-you.md). 2026-04-11.
+[5] [Kimi Introduces Agent Swarm: Let 100 AI Agents Work for You](../../material/reference-notes/s028-kimi-introduces-agent-swarm-let-100-ai-agents-work-for-you.md). 2026-04-11.
 
-[6] [Kimi K2.5: Visual Agentic Intelligence](../material/reference-notes/s029-kimi-k2-5-visual-agentic-intelligence.md). 2026.
+[6] [Kimi K2.5: Visual Agentic Intelligence](../../material/reference-notes/s029-kimi-k2-5-visual-agentic-intelligence.md). 2026.
 
-[7] [Anthropic / OpenClaw / Mobile Use Agent materials as multimodal or multi-session shape evidence](../material/reference-notes/s030-anthropic-openclaw-mobile-use-agent-materials-as-multimodal-or-multi-session-sha.md). 2026.
+[7] [Anthropic / OpenClaw / Mobile Use Agent materials as multimodal or multi-session shape evidence](../../material/reference-notes/s030-anthropic-openclaw-mobile-use-agent-materials-as-multimodal-or-multi-session-sha.md). 2026.
 
-[8] [BentoML Handbook: Prefill-decode disaggregation](../material/reference-notes/s021-prefill-decode-disaggregation.md). 2026/current.
+[8] [BentoML Handbook: Prefill-decode disaggregation](../../material/reference-notes/s021-prefill-decode-disaggregation.md). 2026/current.
 
-[9] [NVIDIA Dynamo: Introducing NIXL (Inference Transfer Library)](../material/reference-notes/s014-nvidia-dynamo-blog-nixl-section.md). 2026-03.
+[9] [NVIDIA Dynamo: Introducing NIXL (Inference Transfer Library)](../../material/reference-notes/s014-nvidia-dynamo-blog-nixl-section.md). 2026-03.
 
-[10] [NVIDIA Vera CPU Delivers High Performance, Bandwidth, and Efficiency for AI Factories](../material/reference-notes/s031-nvidia-vera-cpu-delivers-high-performance-bandwidth-and-efficiency-for-ai-factor.md). 2026-03-16.
+[10] [NVIDIA Vera CPU Delivers High Performance, Bandwidth, and Efficiency for AI Factories](../../material/reference-notes/s031-nvidia-vera-cpu-delivers-high-performance-bandwidth-and-efficiency-for-ai-factor.md). 2026-03-16.
 
-[11] [Inside the NVIDIA Rubin Platform: Six New Chips, One AI Supercomputer](../material/reference-notes/s032-inside-the-nvidia-rubin-platform-six-new-chips-one-ai-supercomputer.md). 2026-01.
+[11] [Inside the NVIDIA Rubin Platform: Six New Chips, One AI Supercomputer](../../material/reference-notes/s032-inside-the-nvidia-rubin-platform-six-new-chips-one-ai-supercomputer.md). 2026-01.
 
-[12] [Grace CPU Delivers High Bandwidth and Efficiency for Modern Data Centers](../material/reference-notes/s033-grace-cpu-delivers-high-bandwidth-and-efficiency-for-modern-data-centers.md). 2025-12-05.
+[12] [Grace CPU Delivers High Bandwidth and Efficiency for Modern Data Centers](../../material/reference-notes/s033-grace-cpu-delivers-high-bandwidth-and-efficiency-for-modern-data-centers.md). 2025-12-05.
 
 ## 3. 概念、术语与分析框架
 
@@ -275,35 +275,35 @@
 
 ### 参考文献
 
-[1] [Full-Stack Optimizations for Agentic Inference with NVIDIA Dynamo](../material/reference-notes/s003-full-stack-optimizations-for-agentic-inference-with-nvidia-dynamo.md). 2026-04-17.
+[1] [Full-Stack Optimizations for Agentic Inference with NVIDIA Dynamo](../../material/reference-notes/s003-full-stack-optimizations-for-agentic-inference-with-nvidia-dynamo.md). 2026-04-17.
 
-[2] [BentoML Handbook: Prefill-decode disaggregation](../material/reference-notes/s021-prefill-decode-disaggregation.md). 2026/current.
+[2] [BentoML Handbook: Prefill-decode disaggregation](../../material/reference-notes/s021-prefill-decode-disaggregation.md). 2026/current.
 
-[3] [FluxMoE: Decoupling Expert Residency for High-Performance MoE Serving](../material/reference-notes/s008-fluxmoe-decoupling-expert-residency-for-high-performance-moe-serving.md). 2026-04-03.
+[3] [FluxMoE: Decoupling Expert Residency for High-Performance MoE Serving](../../material/reference-notes/s008-fluxmoe-decoupling-expert-residency-for-high-performance-moe-serving.md). 2026-04-03.
 
-[4] [Characterizing CPU-Induced Slowdowns in Multi-GPU LLM Inference](../material/reference-notes/s005-characterizing-cpu-induced-slowdowns-in-multi-gpu-llm-inference.md). 2026-03-25.
+[4] [Characterizing CPU-Induced Slowdowns in Multi-GPU LLM Inference](../../material/reference-notes/s005-characterizing-cpu-induced-slowdowns-in-multi-gpu-llm-inference.md). 2026-03-25.
 
-[5] [vLLM CUDA Graphs Design Document](../material/reference-notes/s039-vllm-cuda-graphs-design-document.md). current.
+[5] [vLLM CUDA Graphs Design Document](../../material/reference-notes/s039-vllm-cuda-graphs-design-document.md). current.
 
-[6] [Prefill-as-a-Service: KVCache of Next-Generation Models Could Go Cross-Datacenter](../material/reference-notes/s001-prefill-as-a-service-kvcache-of-next-generation-models-could-go-cross-datacenter.md). 2026-04.
+[6] [Prefill-as-a-Service: KVCache of Next-Generation Models Could Go Cross-Datacenter](../../material/reference-notes/s001-prefill-as-a-service-kvcache-of-next-generation-models-could-go-cross-datacenter.md). 2026-04.
 
-[7] [Ray Serve: PrefixCacheAffinityRouter](../material/reference-notes/s016-ray-prefixcacheaffinityrouter.md). 2026/current.
+[7] [Ray Serve: PrefixCacheAffinityRouter](../../material/reference-notes/s016-ray-prefixcacheaffinityrouter.md). 2026/current.
 
-[8] [Kv Events Subscriber — vLLM](../material/reference-notes/s042-kv-events-subscriber-vllm.md). current.
+[8] [Kv Events Subscriber — vLLM](../../material/reference-notes/s042-kv-events-subscriber-vllm.md). current.
 
-[9] [NOSA: Native and Offloadable Sparse Attention](../material/reference-notes/s006-nosa-native-and-offloadable-sparse-attention.md). 2025-10-15.
+[9] [NOSA: Native and Offloadable Sparse Attention](../../material/reference-notes/s006-nosa-native-and-offloadable-sparse-attention.md). 2025-10-15.
 
-[10] [ScoutAttention: Efficient KV Cache Offloading via Layer-Ahead CPU Pre-computation](../material/reference-notes/s007-scoutattention-efficient-kv-cache-offloading-via-layer-ahead-cpu-pre-computation.md). 2026-03-28.
+[10] [ScoutAttention: Efficient KV Cache Offloading via Layer-Ahead CPU Pre-computation](../../material/reference-notes/s007-scoutattention-efficient-kv-cache-offloading-via-layer-ahead-cpu-pre-computation.md). 2026-03-28.
 
-[11] [Scaling Large MoE Models with Wide Expert Parallelism on NVL72 Rack-Scale Systems](../material/reference-notes/s035-scaling-large-moe-models-with-wide-expert-parallelism-on-nvl72-rack-scale-system.md). 2025-12-18.
+[11] [Scaling Large MoE Models with Wide Expert Parallelism on NVL72 Rack-Scale Systems](../../material/reference-notes/s035-scaling-large-moe-models-with-wide-expert-parallelism-on-nvl72-rack-scale-system.md). 2025-12-18.
 
-[12] [Event Tensor: Dynamic Megakernels for LLM Serving](../material/reference-notes/s040-event-tensor-dynamic-megakernels-for-llm-serving.md). 2026-04.
+[12] [Event Tensor: Dynamic Megakernels for LLM Serving](../../material/reference-notes/s040-event-tensor-dynamic-megakernels-for-llm-serving.md). 2026-04.
 
-[13] [vLLM V1: A Major Upgrade with 1.7x Speedup](../material/reference-notes/s038-vllm-v1-a-major-upgrade-with-1-7x-speedup.md). 2025-01-27.
+[13] [vLLM V1: A Major Upgrade with 1.7x Speedup](../../material/reference-notes/s038-vllm-v1-a-major-upgrade-with-1-7x-speedup.md). 2025-01-27.
 
-[14] [Kimi Introduces Agent Swarm: Let 100 AI Agents Work for You](../material/reference-notes/s028-kimi-introduces-agent-swarm-let-100-ai-agents-work-for-you.md). 2026-04-11.
+[14] [Kimi Introduces Agent Swarm: Let 100 AI Agents Work for You](../../material/reference-notes/s028-kimi-introduces-agent-swarm-let-100-ai-agents-work-for-you.md). 2026-04-11.
 
-[15] [NVIDIA Vera CPU Delivers High Performance, Bandwidth, and Efficiency for AI Factories](../material/reference-notes/s031-nvidia-vera-cpu-delivers-high-performance-bandwidth-and-efficiency-for-ai-factor.md). 2026-03-16.
+[15] [NVIDIA Vera CPU Delivers High Performance, Bandwidth, and Efficiency for AI Factories](../../material/reference-notes/s031-nvidia-vera-cpu-delivers-high-performance-bandwidth-and-efficiency-for-ai-factor.md). 2026-03-16.
 
 ## 4. Agentic workload 如何重写 CPU 问题定义
 
@@ -389,21 +389,21 @@ S005 的测量为此提供了直接证据：在 Llama 3.1 8B（4×H200）上，*
 
 ### 参考文献
 
-[1] [Prefill-as-a-Service: KVCache of Next-Generation Models Could Go Cross-Datacenter](../material/reference-notes/s001-prefill-as-a-service-kvcache-of-next-generation-models-could-go-cross-datacenter.md). 2026-04.
+[1] [Prefill-as-a-Service: KVCache of Next-Generation Models Could Go Cross-Datacenter](../../material/reference-notes/s001-prefill-as-a-service-kvcache-of-next-generation-models-could-go-cross-datacenter.md). 2026-04.
 
-[2] [Kimi Introduces Agent Swarm: Let 100 AI Agents Work for You](../material/reference-notes/s028-kimi-introduces-agent-swarm-let-100-ai-agents-work-for-you.md). 2026-04-11.
+[2] [Kimi Introduces Agent Swarm: Let 100 AI Agents Work for You](../../material/reference-notes/s028-kimi-introduces-agent-swarm-let-100-ai-agents-work-for-you.md). 2026-04-11.
 
-[3] [Kimi K2.5: Visual Agentic Intelligence](../material/reference-notes/s029-kimi-k2-5-visual-agentic-intelligence.md). 2026.
+[3] [Kimi K2.5: Visual Agentic Intelligence](../../material/reference-notes/s029-kimi-k2-5-visual-agentic-intelligence.md). 2026.
 
-[4] [Anthropic / OpenClaw / Mobile Use Agent materials as multimodal or multi-session shape evidence](../material/reference-notes/s030-anthropic-openclaw-mobile-use-agent-materials-as-multimodal-or-multi-session-sha.md). 2026.
+[4] [Anthropic / OpenClaw / Mobile Use Agent materials as multimodal or multi-session shape evidence](../../material/reference-notes/s030-anthropic-openclaw-mobile-use-agent-materials-as-multimodal-or-multi-session-sha.md). 2026.
 
-[5] [Full-Stack Optimizations for Agentic Inference with NVIDIA Dynamo](../material/reference-notes/s003-full-stack-optimizations-for-agentic-inference-with-nvidia-dynamo.md). 2026-04-17.
+[5] [Full-Stack Optimizations for Agentic Inference with NVIDIA Dynamo](../../material/reference-notes/s003-full-stack-optimizations-for-agentic-inference-with-nvidia-dynamo.md). 2026-04-17.
 
-[6] [BentoML Handbook: Prefill-decode disaggregation](../material/reference-notes/s021-prefill-decode-disaggregation.md). 2026/current.
+[6] [BentoML Handbook: Prefill-decode disaggregation](../../material/reference-notes/s021-prefill-decode-disaggregation.md). 2026/current.
 
-[7] [Kv Events Subscriber — vLLM](../material/reference-notes/s042-kv-events-subscriber-vllm.md). current.
+[7] [Kv Events Subscriber — vLLM](../../material/reference-notes/s042-kv-events-subscriber-vllm.md). current.
 
-[8] [Characterizing CPU-Induced Slowdowns in Multi-GPU LLM Inference](../material/reference-notes/s005-characterizing-cpu-induced-slowdowns-in-multi-gpu-llm-inference.md). 2026-03.
+[8] [Characterizing CPU-Induced Slowdowns in Multi-GPU LLM Inference](../../material/reference-notes/s005-characterizing-cpu-induced-slowdowns-in-multi-gpu-llm-inference.md). 2026-03.
 
 ## 5. 主线一：算子下发为什么从 launch overhead 变成调度墙
 
@@ -589,35 +589,32 @@ Arm 的信号最像在定义一个新品类。`AGI CPU` 的表述已经不只是
 
 ### 10.5 四家分歧与收敛
 
-四家的分歧在于：NVIDIA 更偏封闭式 `state fabric`，AMD 更偏开放式 `balanced host control layer`，Intel 更偏企业异构中的 `host-and-action hub`，Arm 更偏新的 `AI-native orchestration silicon`。它们的收敛点则很明确：都在围绕带宽、coherence、data movement、deterministic multi-tenancy 和 node-level coordination 重写 CPU 角色。也就是说，下一阶段竞争点并不是谁更像传统服务器 CPU，而是谁更能把 CPU 固化成推理状态控制面的标准形态。
+四家的分歧在于：NVIDIA 更偏封闭式 `state fabric`，AMD 更偏开放式 `balanced host control layer`，Intel 更偏企业异构中的 `host-and-action hub`，Arm 更偏新的 `AI-native orchestration silicon`。它们的收敛点也很清楚：都在围绕带宽、coherence、data movement、deterministic multi-tenancy 和 node-level coordination 重写 CPU 角色。
+
+因此，下一阶段竞争点并不是谁更像传统服务器 CPU，而是谁能先把 CPU 固化成推理状态控制面的标准形态。这个判断需要进一步从“厂商路线”上升到“平台组织方式”。
 
 ### 10.6 为什么说 agentic 处理器趋势的核心不是 GPU，而是 control plane 平台化
 
-如果把这条厂商路线图和最近补下来的平台材料放在一起看，一个更值得单独写清的收束判断就会浮出来：
+把这条厂商路线图和补充平台材料放在一起看，最稳的收束判断是：
 
 > agentic 处理器趋势的核心，不是 CPU、GPU、NPU 各自如何演进，而是哪种平台最先把 `状态、互连、host memory hierarchy 和基础设施旁路` 组织成可持续的 AI control plane。
 
-这一步很重要，因为它决定了我们后面到底该怎么看“处理器趋势”。如果问题被写成“哪家 GPU 更强”或“哪一代 HBM 更快”，那主语就错了。对本综述真正重要的是：
+这里并不是否认 GPU 或 HBM 的重要性，而是明确本综述的观察对象：agentic inference 抬高的是状态编排、数据移动、跨阶段恢复和多租户隔离的成本。因此，真正需要跟踪的是四个问题：
 
 - CPU 是否正在从通用宿主前移为 `control plane / data engine`
 - 互连是否不再只是传数据，而开始承担状态流动与平台可组合性的底盘
 - host 侧内存层是否从“容量背景”变成“编排对象”
 - DPU / SuperNIC / switch / storage offload 是否正在替 CPU 腾出预算，让它更专注于推理编排
 
-也正因此，`GPU` 和 `HBM` 在这里最多只能作为平台背景条件，而不应再作为主论点展开。
+这四个问题，才是处理器路线图和前文系统主线真正接上的地方。
 
 #### 10.6.1 NVIDIA 已经把 CPU 明确推成 AI factory 的 data engine
 
-在当前公开材料里，NVIDIA 是这条主线最强的正例。`Grace -> Vera -> Rubin -> BlueField` 这条线，不是在回答“如何再做一颗更强的加速器”，而是在回答“如何把 CPU、网络、旁路和平台调度写成同一个 AI factory 定义”。
-
-补充材料里最强的两份一手证据来自：
-
-- `NVIDIA Vera CPU Delivers High Performance, Bandwidth, and Efficiency for AI Factories`
-- `Inside the NVIDIA Rubin Platform: Six New Chips, One AI Supercomputer`
+在当前公开材料里，NVIDIA 是这条主线最强的正例。`Grace -> Vera -> Rubin -> BlueField` 这条线回答的不是“如何再做一颗更强的加速器”，而是“如何把 CPU、网络、旁路和平台调度写成同一个 AI factory 定义”。补充材料里最强的两份一手证据分别是 `NVIDIA Vera CPU Delivers High Performance, Bandwidth, and Efficiency for AI Factories` 和 `Inside the NVIDIA Rubin Platform: Six New Chips, One AI Supercomputer`。
 
 前者没有把 Vera 当成传统服务器 CPU 去写，而是直接围绕 `agentic` 与 AI factory 场景给出指标：`88` 个 Olympus cores、`1.2TB/s` 内存带宽、`1.5x` sandbox performance、单机架 `4x` sandbox capacity。这里最重要的不是数字本身，而是这些数字对应的是一种新的 CPU 职责定义：CPU 不再只是配套 host，而是面向 `sandbox`、`data movement`、`context switching` 和持续并发控制任务优化的基础设施组件。
 
-后者则把 Vera CPU、Rubin GPU、BlueField-4、ConnectX-9、Spectrum-6 等部件写成同一个 AI factory 平台，并明确把 CPU 放在 `data movement`、`memory` 和 `control flow` 的位置上。也就是说，NVIDIA 当前回答 agentic 负载的方式，已经不是“单颗芯片更强”，而是“整个平台如何围绕 control plane 和 state fabric 重写自身”。
+后者则把 Vera CPU、Rubin GPU、BlueField-4、ConnectX-9、Spectrum-6 等部件写成同一个 AI factory 平台，并明确把 CPU 放在 `data movement`、`memory` 和 `control flow` 的位置上。也就是说，NVIDIA 当前回答 agentic 负载的方式，已经从单点芯片性能转向平台级 control plane 和 state fabric。
 
 <img src="../../assets/nvidia-vera-cpu-architecture.png" alt="NVIDIA Vera CPU architecture" width="760">
 
@@ -632,9 +629,9 @@ NVIDIA 已经不把 CPU 当成 GPU 服务器的配件，而是在把它推进成
 
 #### 10.6.2 开放路线的关键，不是复制封闭平台，而是做强互连和可组合性
 
-与 NVIDIA 对照，`AMD + UALink + UCIe + CXL` 更像是另一条开放路线。它当前没有形成同等成熟的平台闭环，但技术底盘已经相当清楚。
+与 NVIDIA 对照，`AMD + UALink + UCIe + CXL` 更像是另一条开放路线。它当前没有形成同等成熟的平台闭环，但技术底盘已经相当清楚：用开放互连和 host-device 扩展能力，支撑更可组合的 AI rack。
 
-AMD 自己的公开表述，已经开始把 `agentic AI` 所需的 `GPU + CPU + NIC` 协同、开放机架参考设计以及 `UALink` 路线放在同一语境里。更关键的是，`UALink`、`UCIe` 与 `CXL 4.0` 这组三类标准，提供了开放路线所需的底层编排能力：
+AMD 的公开表述已经开始把 `agentic AI` 所需的 `GPU + CPU + NIC` 协同、开放机架参考设计以及 `UALink` 路线放在同一语境里。更关键的是，`UALink`、`UCIe` 与 `CXL 4.0` 这组三类标准，提供了开放路线所需的底层编排能力：
 
 - `UALink` 把大规模 scale-up 和未来 `in-network compute` 的能力公开化；
 - `UCIe` 把 package-level die-to-die 开放互连制度化，降低多厂 chiplet 组合的摩擦；
@@ -650,16 +647,14 @@ AMD 自己的公开表述，已经开始把 `agentic AI` 所需的 `GPU + CPU + 
 
 #### 10.6.3 这一节真正保留的主变量
 
-把这批材料收束之后，这一节真正保留的主变量只有四个：
+把这批材料收束之后，本节真正保留的主变量只有四个：
 
 1. `CPU role redefinition`
 2. `interconnect as control-plane substrate`
 3. `host memory hierarchy as orchestration object`
 4. `infrastructure offload`
 
-也就是说，这里真正重要的不是某代 `GPU` 或 `HBM` 规格，而是整个平台里 `CPU + 状态 + 互连 + host memory hierarchy + offload fabric` 的关系。
-
-这也意味着，在厂商路线图之后再进入 benchmark、研究空白和讨论章节时，读者不应只问“谁的芯片更强”，而应问：
+也就是说，这里真正重要的是整个平台里 `CPU + 状态 + 互连 + host memory hierarchy + offload fabric` 的关系。接下来进入 benchmark、研究空白和讨论章节时，问题也应随之改变：
 
 > 谁的平台最先吸收了这种 control-plane 压力，并把它写进了产品与系统组织方式。
 
@@ -669,7 +664,7 @@ AMD 自己的公开表述，已经开始把 `agentic AI` 所需的 `GPU + CPU + 
 
 ### 10.8 本章小结
 
-平台路线图与厂商叙事并不能直接证明某项软件机制已广泛落地，但它们足以说明一件事：CPU 正被各家厂商主动重写成 orchestration 和 state coordination 的平台角色，而不再只是传统 host。更进一步地说，agentic 时代真正被重写的，不是某颗芯片，而是整个平台里 `CPU + 状态 + 互连 + host memory hierarchy + offload fabric` 的关系。
+平台路线图与厂商叙事并不能直接证明某项软件机制已广泛落地，但它们足以说明一件事：CPU 正被各家厂商主动重写成 orchestration 和 state coordination 的平台角色，而不再只是传统 host。换句话说，agentic 时代真正被重写的是整个平台里 `CPU + 状态 + 互连 + host memory hierarchy + offload fabric` 的关系。
 
 ---
 

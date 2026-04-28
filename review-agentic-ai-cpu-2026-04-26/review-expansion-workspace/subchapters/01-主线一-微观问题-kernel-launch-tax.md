@@ -243,14 +243,14 @@ GraphMend 进一步补充了这条技术谱系的**左侧起点**：在考虑 ru
 
 ### 参考文献
 
-[1] [Characterizing CPU-Induced Slowdowns in Multi-GPU LLM Inference](../material/reference-notes/s005-characterizing-cpu-induced-slowdowns-in-multi-gpu-llm-inference.md). 2026-03-25.
+[1] [Characterizing CPU-Induced Slowdowns in Multi-GPU LLM Inference](../../../material/reference-notes/s005-characterizing-cpu-induced-slowdowns-in-multi-gpu-llm-inference.md). 2026-03-25.
 
-[2] [vLLM V1: A Major Upgrade with 1.7x Speedup](../material/reference-notes/s038-vllm-v1-a-major-upgrade-with-1-7x-speedup.md). 2025-01-27.
+[2] [vLLM V1: A Major Upgrade with 1.7x Speedup](../../../material/reference-notes/s038-vllm-v1-a-major-upgrade-with-1-7x-speedup.md). 2025-01-27.
 
-[3] [vLLM CUDA Graphs Design Document](../material/reference-notes/s039-vllm-cuda-graphs-design-document.md). current.
+[3] [vLLM CUDA Graphs Design Document](../../../material/reference-notes/s039-vllm-cuda-graphs-design-document.md). current.
 
-[4] [Event Tensor: Dynamic Megakernels for LLM Serving](../material/reference-notes/s040-event-tensor-dynamic-megakernels-for-llm-serving.md). 2026-04.
+[4] [Event Tensor: Dynamic Megakernels for LLM Serving](../../../material/reference-notes/s040-event-tensor-dynamic-megakernels-for-llm-serving.md). 2026-04.
 
-[5] [Characterizing and Optimizing LLM Inference Workloads on CPU-GPU Coupled Architectures](../material/reference-notes/s049-characterizing-optimizing-llm-inference-cpu-gpu-coupled-ispass25.md). ISPASS 2025, 2025-04-16.
+[5] [Characterizing and Optimizing LLM Inference Workloads on CPU-GPU Coupled Architectures](../../../material/reference-notes/s049-characterizing-optimizing-llm-inference-cpu-gpu-coupled-ispass25.md). ISPASS 2025, 2025-04-16.
 
-[6] [GraphMend: Code Transformations for Fixing Graph Breaks in PyTorch 2](../material/reference-notes/s053-graphmend-fixing-pytorch-graph-breaks.md). 2025-09-17.
+[6] [GraphMend: Code Transformations for Fixing Graph Breaks in PyTorch 2](../../../material/reference-notes/s053-graphmend-fixing-pytorch-graph-breaks.md). 2025-09-17.
