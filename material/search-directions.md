@@ -206,3 +206,24 @@
   - 还缺更多跨框架实测，尤其是 mixed prefill/decode 和多模态批次下的回退行为
 - New directions added:
   - 暂无
+
+---
+
+# Round 2 Search Directions (S056+)
+
+## Round 2 Research Frame
+
+- 目标：把 Round 1 中 `partially_supported` 的结论和 `gap-audit` 中标记的缺口补齐
+- 范围：不新增主线，只补证据；优先生产级实测数字和跨框架验证
+- 时间边界：仍优先 `2025-01-01` 及之后
+
+## New Directions Ledger
+
+| id | label | why it matters | starter queries | source targets | parent | status | reflection |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| D18 | Agentic workload taxonomy & formal definition | 补 D01 缺口；建立可被系统论文引用的 workload 定义，防止 scope drift | `agentic inference workload definition`, `agentic LLM serving taxonomy`, `multi-turn agent inference formal model` | papers, official blogs | - | searched | S056 提供首个生产级 workload 定义和 TTFAT 指标；S058 Helium 提供 workflow-aware serving 框架和 1.56x 加速 |
+| D19 | Deployment role taxonomy（prefill / decode / coord / remote prefill） | 补 D09 缺口；把"节点 specialization"从推断变成有部署证据的结论 | `prefill node decode node specialization`, `disaggregated serving node roles`, `remote prefill service deployment` | papers, official blogs, deployment guides | - | searched | S059 Ray Serve 明确 PDPrefillServer/PDDecodeServer；S060 PrfaaS-PD 引入 Local PD clusters / PrfaaS clusters / Global KVCache manager 三种角色；S061 DeepSeek CloudMatrix384 引入 PDC 和 Caching Cluster 独立角色 |
+| D20 | Production metrics: graph capture memory & fallback frequency | 补 G04；把图化编译的"代价"从定性描述变成有数字支撑 | `CUDA graph capture memory overhead serving`, `torch.compile fallback frequency vLLM`, `graph compilation warmup overhead LLM serving` | issues, design docs, official blogs, benchmark reports | D17 | searched | S064 Foundry 给出 cold-start 99% 降低和精确时间分解；S065 给出 CUDA graph OOM 生产案例；S067 给出 re-recording limit 128 等约束 |
+| D21 | Production metrics: prefix cache hit/miss & metadata overhead | 补 G06；补全 prefix cache 演化链的代价函数 | `prefix cache hit rate production`, `vLLM prefix caching metadata overhead`, `cache eviction policy overhead serving` | issues, design docs, benchmark reports | D12 | searched | S068 给出 <1% degradation at 0% hit rate；S069 暴露 benchmark vs production hit rate 差距（99.8% vs 91%）；S070 给出 KV block lifetime/reuse gap metrics；S071 给出 1:1,000,000 metadata ratio |
+| D22 | Multimodal prefix identity & visual cache reuse | 补 G07；把多模态 cache 从工程经验升级为有设计原则支撑 | `multimodal prefix caching`, `visual cache key LLM serving`, `multimodal KV cache identity` | papers, issues, design docs | D12 | searched | S073 vLLM V1 使用 image hashes 作为多模态 cache key；S047 已记录 multimodal cache bug；但仍缺系统级设计原则论文 |
+| D23 | Sparse KV retention policy & event-driven overhead | 补 G02；量化稀疏 KV 访问的 policy 代价 | `KV cache event subscriber overhead`, `sparse KV retention policy`, `selective KV eviction serving` | issues, design docs, benchmark reports | D15 | searched | S076 系统综述多种 eviction/compression 策略和数字；但还缺真实 serving stack（vLLM/TensorRT-LLM）中 event-driven retention 的线上 overhead 测量 |
